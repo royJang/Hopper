@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hopper</title>
+<link href="public/css/main.css" type="text/css" rel="stylesheet" />
+<link href="public/css/style.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<nav class="hopper-nav">
+    <ul>
+        <li>File</li>
+        <li>Options</li>
+        <li>Help</li>
+    </ul>
+</nav>
+<main>
+    <div class="connect-list">
+        <div class="mobile-active">
+            <span>connecting:</span>
+            <ul class="connect-list-item">
+                <script type="application/x-template" id="connecting">
+                    <% for(var i in connecting){ console.log(connecting,i) %>
+                        <li>
+                            <% if(/android|iphone|ipad/.test(connecting[i]["ua"])){ %>
+                                <i class="icon-mobile"></i>
+                            <% }else{ %>
+                                <i class="icon-display"></i>
+                            <% } %>
+                            <%= connecting[i] + "-" + i %>
+                        </li>
+                    <% } %>
+                </script>
+            </ul>
+        </div>
+    </div>
+    <div class="chrome-console">
+
+    </div>
+</main>
+<script src="public/js/server.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+@import "xLess";
+
+.reset();
+
+//global
+body{
+  .font-family(); font-size:14px;
+}
+
+//header
+.hopper-nav {
+  width:100%;
+  ul {
+    border-bottom:1px solid #999; cursor: pointer; .of; background: @blue; color:#fff;
+    li {
+      .fl; line-height: 30px; height:30px; padding:0px 10px; .ta; margin:5px;
+      &:hover {
+        background:#fff; color:#000; border-radius: 3px;
+      }
+    }
+  }
+}
+
+//connect-list
+.connect-list{
+  .mobile-active {
+    border-bottom:1px solid #ccc; .of;
+    >span,>ul {
+      .fl; .height(45px); padding-left:5px;
+    }
+    >span {
+
+    }
+    ul {
+      .of;
+      li {
+        padding:0px 7px; .fl; color:@green5;
+        span {
+          color:red;
+        }
+        i {
+          margin-right:5px; vertical-align: middle;
+        }
+      }
+    }
+  }
+}

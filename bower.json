@@ -1,0 +1,25 @@
+{
+  "name": "Hopper",
+  "version": "0.0.1",
+  "homepage": "https://github.com/royJang/Hopper",
+  "authors": [
+    "roy <zzl11081@gmail.com>"
+  ],
+  "description": "a hybrid/web app debug program",
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "debug"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
