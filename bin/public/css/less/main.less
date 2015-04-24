@@ -61,37 +61,23 @@ body{
       &:hover {
         background: #ccc;
       }
+      &.active {
+        background: #ccc;
+      }
     }
   }
 }
 
 .hopper-console-child-layout{
   height:80vh; overflow-y:auto;
-  .hopper-console-console {
-    #console-panel {
-      li {
-        line-height:25px; padding:5px 15px; border-bottom:1px solid #ddd; .posr; clear: both; .of;
-        .f {
-          color:@green5; font-style: normal;
-        }
-        .file {
-          .fr; color:#333; .tdu; display: inline-block; width:100%; cursor: pointer;
-          &:hover {
-            color:@blue;
-          }
-        }
-        .fl,.fr{
-          .fl;
-        }
-        div.fl {
-          width:70%;
-        }
-        div.fr {
-          width:30%; text-align: right;
-        }
-      }
+  >div {
+    display: none;
+    &.active {
+      display: block;
     }
   }
+  @import "panel/resource";
+  @import "panel/log";
 }
 
 

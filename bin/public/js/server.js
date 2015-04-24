@@ -12,6 +12,7 @@ var server = http.createServer(),
 var $ = require("jquery"),
     _ = require("underscore");
 
+var util = require("./public/js/util");
 var log = require("./public/js/console");
 
 //默认端口
@@ -23,14 +24,8 @@ var win = gui.Window.get();
 //win.maximize();
 //win.showDevTools();
 
-//获取本地ip
-function getLocalIP() {
-    var _network = os.networkInterfaces();
-    return _network["en0"][1].address;
-}
-
 //将title替换为hopper - ip
-$("title").html("Hopper" + "    -    " + getLocalIP());
+$("title").html("Hopper" + "    -    " + util.getLocalIP());
 
 //链接部分
 var list_item = $(".connect-list-item");

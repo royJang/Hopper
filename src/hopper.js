@@ -17,6 +17,7 @@
     var ap = Array.prototype;
     var aps = ap.slice;
     var apf = ap.forEach;
+    var apu = ap.push;
 
     var getType = function ( obj ){
         if (obj == null) {
@@ -79,19 +80,12 @@
     };
 
     var h  = {
-        send : function (){
+        send : function (args, stack){
             var _log = "",
                 _type = "",
-                _stack;
+                _stack = stack;
 
-            //获取文件信息
-            try {
-                whatTheFuck
-            }catch(e){
-                _stack = e.stack;
-            }
-
-            apf.call(arguments[0], function (el, i, array){
+            apf.call(args, function (el, i, array){
 
                 var obj = el
                 var log = obj;
@@ -141,7 +135,14 @@
             });
         },
         log : function (){
-            this.send( arguments );
+            var _stack;
+            //获取文件信息
+            try {
+                whatTheFuck
+            }catch(e){
+                _stack = e.stack;
+            }
+            this.send( arguments, _stack );
         },
         info : function (){
             this.log( arguments );
@@ -163,7 +164,7 @@
                 whatTheFuck
             }
             catch(e){
-                //捕获错误栈,传给server
+                //捕获错误栈,传给server,这样server就知道当前是哪个页面了
                 socket.emit("debug", e.stack);
             }
         }
@@ -186,7 +187,9 @@
 })(window);
 
 
-console.debug();
+console.log(1,2);
+
+//console.debug();
 
 
 

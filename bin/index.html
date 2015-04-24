@@ -35,23 +35,32 @@
     </div>
     <div class="hopper-console">
         <div class="hopper-console-nav">
-            <ul>
-                <li>Element</li>
-                <li>Network</li>
-                <li>Resource</li>
-                <li>Profile</li>
-                <li>Console</li>
+            <ul class="hopper-console-nav-list">
+                <li class="hopper-nav-element">Element</li>
+                <li class="hopper-nav-network">Network</li>
+                <li class="hopper-nav-resource">Resource</li>
+                <li class="hopper-nav-profile">Profile</li>
+                <li class="hopper-nav-console active">Console</li>
             </ul>
         </div>
         <div class="hopper-console-child-layout">
-            <div class="hopper-console-element"></div>
-            <div class="hopper-console-network"></div>
-            <div class="hopper-console-resource"></div>
-            <div class="hopper-console-profile"></div>
-            <div class="hopper-console-console">
+            <div class="hopper-console-element">
+                element
+            </div>
+            <div class="hopper-console-network">
+                network
+            </div>
+            <div class="hopper-console-resource">
+                <textarea id="showResource"  readonly>
+                </textarea>
+            </div>
+            <div class="hopper-console-profile">
+                profile
+            </div>
+            <div class="hopper-console-console active">
                 <ul id="console-panel">
-                    <script type="application/x-template" id="hopper-console">
-                        <% for(var i in statement){ %>
+                    <script type="application/x-template" id="console-panel-template">
+                        <% for(var i in statement){ console.log(statement); %>
                             <% if(statement[i].type == "Error"){  %>
                             <li style="color:red;">
                             <% } else { %>
@@ -69,8 +78,8 @@
                                 </div>
                                 <div class="fr">
                                     <span class="file">
-                                        <% if(statement[i].file && statement[i].file){ %>
-                                            <%= statement[i].file %>:<%= statement[i].line %>
+                                        <% if(statement[i].file && statement[i].line){ %>
+                                            <file><%= statement[i].file %>^<%= statement[i].line %></file>
                                         <% } %>
                                     </span>
                                 </div>

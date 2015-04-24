@@ -355,9 +355,24 @@ body {
 .hopper-console-nav ul li:hover {
   background: #ccc;
 }
+.hopper-console-nav ul li.active {
+  background: #ccc;
+}
 .hopper-console-child-layout {
   height: 80vh;
   overflow-y: auto;
+}
+.hopper-console-child-layout > div {
+  display: none;
+}
+.hopper-console-child-layout > div.active {
+  display: block;
+}
+.hopper-console-child-layout .hopper-console-resource #showResource {
+  width: 100vw;
+  height: 80vh;
+  resize: none;
+  border: none;
 }
 .hopper-console-child-layout .hopper-console-console #console-panel li {
   line-height: 25px;
