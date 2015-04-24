@@ -341,3 +341,55 @@ body {
   margin-right: 5px;
   vertical-align: middle;
 }
+.hopper-console-nav {
+  background: #e3e3e3;
+}
+.hopper-console-nav ul {
+  overflow: hidden;
+}
+.hopper-console-nav ul li {
+  float: left;
+  padding: 5px 7px;
+  cursor: pointer;
+}
+.hopper-console-nav ul li:hover {
+  background: #ccc;
+}
+.hopper-console-child-layout {
+  height: 80vh;
+  overflow-y: auto;
+}
+.hopper-console-child-layout .hopper-console-console #console-panel li {
+  line-height: 25px;
+  padding: 5px 15px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  clear: both;
+  overflow: hidden;
+}
+.hopper-console-child-layout .hopper-console-console #console-panel li .f {
+  color: #009966;
+  font-style: normal;
+}
+.hopper-console-child-layout .hopper-console-console #console-panel li .file {
+  float: left;
+  color: #333;
+  text-decoration: underline;
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+}
+.hopper-console-child-layout .hopper-console-console #console-panel li .file:hover {
+  color: #336699;
+}
+.hopper-console-child-layout .hopper-console-console #console-panel li .fl,
+.hopper-console-child-layout .hopper-console-console #console-panel li .fr {
+  float: left;
+}
+.hopper-console-child-layout .hopper-console-console #console-panel li div.fl {
+  width: 70%;
+}
+.hopper-console-child-layout .hopper-console-console #console-panel li div.fr {
+  width: 30%;
+  text-align: right;
+}

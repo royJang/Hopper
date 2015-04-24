@@ -19,7 +19,7 @@
             <span>connecting:</span>
             <ul class="connect-list-item">
                 <script type="application/x-template" id="connecting">
-                    <% for(var i in connecting){ console.log(connecting,i) %>
+                    <% for(var i in connecting){ %>
                         <li>
                             <% if(/android|iphone|ipad/.test(connecting[i]["ua"])){ %>
                                 <i class="icon-mobile"></i>
@@ -33,8 +33,53 @@
             </ul>
         </div>
     </div>
-    <div class="chrome-console">
-
+    <div class="hopper-console">
+        <div class="hopper-console-nav">
+            <ul>
+                <li>Element</li>
+                <li>Network</li>
+                <li>Resource</li>
+                <li>Profile</li>
+                <li>Console</li>
+            </ul>
+        </div>
+        <div class="hopper-console-child-layout">
+            <div class="hopper-console-element"></div>
+            <div class="hopper-console-network"></div>
+            <div class="hopper-console-resource"></div>
+            <div class="hopper-console-profile"></div>
+            <div class="hopper-console-console">
+                <ul id="console-panel">
+                    <script type="application/x-template" id="hopper-console">
+                        <% for(var i in statement){ %>
+                            <% if(statement[i].type == "Error"){  %>
+                            <li style="color:red;">
+                            <% } else { %>
+                            <li>
+                            <% } %>
+                                <div class="fl">
+                                    <i class="f">&lt;</i>
+                                    <span class="f">
+                                    <%= statement[i].type %>
+                                    </span>
+                                    <i class="f">&gt</i>
+                                    <span>
+                                        <%= statement[i].log %>
+                                    </span>
+                                </div>
+                                <div class="fr">
+                                    <span class="file">
+                                        <% if(statement[i].file && statement[i].file){ %>
+                                            <%= statement[i].file %>:<%= statement[i].line %>
+                                        <% } %>
+                                    </span>
+                                </div>
+                            </li>
+                        <% } %>
+                    </script>
+                </ul>
+            </div>
+        </div>
     </div>
 </main>
 <script src="public/js/server.js"></script>

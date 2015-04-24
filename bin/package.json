@@ -1,6 +1,6 @@
 {
   "name": "bin",
-  "main" : "index.html",
+  "main": "index.html",
   "window": {
     "width": 800,
     "height": 600,
@@ -9,6 +9,7 @@
     "toolbar": true
   },
   "dependencies": {
+    "breakpoint": "^0.1.6",
     "socket.io": "^1.3.0"
   }
 }
