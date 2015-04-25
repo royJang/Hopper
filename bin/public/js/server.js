@@ -42,6 +42,10 @@ io.on("connection", function (socket){
         });
         list_item.html(r);
     });
+
+    //渲染dom结构
+    socket.on("dom", log.dom);
+
     //当有log请求
     socket.on("log", log.log);
     socket.on("debug", log.debug);

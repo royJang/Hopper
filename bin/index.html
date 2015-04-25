@@ -36,28 +36,28 @@
     <div class="hopper-console">
         <div class="hopper-console-nav">
             <ul class="hopper-console-nav-list">
-                <li class="hopper-nav-element">Element</li>
+                <li class="hopper-nav-element active">Element</li>
                 <li class="hopper-nav-network">Network</li>
-                <li class="hopper-nav-resource">Resource</li>
-                <li class="hopper-nav-profile">Profile</li>
-                <li class="hopper-nav-console active">Console</li>
+                <li class="hopper-nav-source">Source</li>
+                <li class="hopper-nav-resources">Resources</li>
+                <li class="hopper-nav-console">Console</li>
             </ul>
         </div>
         <div class="hopper-console-child-layout">
-            <div class="hopper-console-element">
-                element
+            <div class="hopper-console-element active">
+                <ul id="elementResource"></ul>
             </div>
             <div class="hopper-console-network">
                 network
             </div>
-            <div class="hopper-console-resource">
-                <textarea id="showResource"  readonly>
-                </textarea>
+            <div class="hopper-console-source">
+                <ul id="showResource">
+                </ul>
             </div>
-            <div class="hopper-console-profile">
+            <div class="hopper-console-resources">
                 profile
             </div>
-            <div class="hopper-console-console active">
+            <div class="hopper-console-console">
                 <ul id="console-panel">
                     <script type="application/x-template" id="console-panel-template">
                         <% for(var i in statement){ console.log(statement); %>

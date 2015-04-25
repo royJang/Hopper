@@ -10,14 +10,28 @@
         class2type[ "[object " + el + "]" ] = el.toLowerCase();
     });
 
+    //获得当前的地址
+    var path = location.href;
+
     var rwindow = /^\[object (?:Window|DOMWindow|global)\]$/;
+
     var oproto = Object.prototype;
     var ohasOwn = oproto.hasOwnProperty;
     var serialize = oproto.toString;
+
     var ap = Array.prototype;
     var aps = ap.slice;
     var apf = ap.forEach;
     var apu = ap.push;
+
+    var whatTheFuck = function ( callback ){
+        try{
+            wtf
+        }
+        catch(e){
+            return callback(e);
+        }
+    };
 
     var getType = function ( obj ){
         if (obj == null) {
@@ -82,11 +96,9 @@
     var h  = {
         send : function (args, stack){
             var _log = "",
-                _type = "",
-                _stack = stack;
+                _type = "";
 
             apf.call(args, function (el, i, array){
-
                 var obj = el
                 var log = obj;
                 var type = getType(log);
@@ -94,17 +106,16 @@
                 //根据type 处理log
                 switch ( type ){
                     case "object" : {
-                        var _obj = obj;
                         //是一个元素
-                        if(!util.isPlainObject(_obj)){
-                            log = _obj.toString();
+                        if(!util.isPlainObject(obj)){
+                            log = obj.toString();
                         }else{
-                            log = JSON.stringify(_obj);
+                            log = JSON.stringify(obj);
                         }
                         break;
                     }
                     case "string" : {
-                        log = String(log);
+                        log = encodeURIComponent(obj);
                         break;
                     }
                     case "function" : {
@@ -131,18 +142,17 @@
             socket.emit("log", {
                 log : _log,
                 type : _type,
-                stack : _stack
+                stack : stack
             });
         },
         log : function (){
-            var _stack;
+            var self = this,
+                args = arguments;
+
             //获取文件信息
-            try {
-                whatTheFuck
-            }catch(e){
-                _stack = e.stack;
-            }
-            this.send( arguments, _stack );
+            whatTheFuck(function (e){
+                self.send( args, e.stack );
+            })
         },
         info : function (){
             this.log( arguments );
@@ -160,13 +170,10 @@
         },
         debug : function (){
             var self = this;
-            try{
-                whatTheFuck
-            }
-            catch(e){
+            whatTheFuck(function (e){
                 //捕获错误栈,传给server,这样server就知道当前是哪个页面了
                 socket.emit("debug", e.stack);
-            }
+            });
         }
     };
 
@@ -184,13 +191,12 @@
         hostname : location.hostname
     });
 
+    //传输DOM结构
+    socket.emit("dom", {
+       url : path
+    });
+
 })(window);
-
-
-console.log(1,2);
-
-//console.debug();
-
 
 
 

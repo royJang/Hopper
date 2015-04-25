@@ -10,8 +10,8 @@ var consoleNavs = $(".hopper-console-nav-list");
 //子nav
 var elementNav = consoleNavs.find(".hopper-nav-element"),
     networkNav = consoleNavs.find(".hopper-nav-network"),
-    resourceNav = consoleNavs.find('.hopper-nav-resource'),
-    profileNav = consoleNavs.find(".hopper-nav-profile"),
+    sourceNav = consoleNavs.find('.hopper-nav-source'),
+    resourcesNav = consoleNavs.find(".hopper-nav-resources"),
     consoleNav = consoleNavs.find(".hopper-nav-console");
 
 //整个console面板变量获取
@@ -19,24 +19,24 @@ var consolePanels = $(".hopper-console-child-layout");
 //子console面板
 var elementPanel = consolePanels.find(".hopper-console-element"),
     networkPanel = consolePanels.find(".hopper-console-network"),
-    resourcePanel = consolePanels.find('.hopper-console-resource'),
-    profilePanel = consolePanels.find(".hopper-console-profile"),
+    sourcePanel = consolePanels.find('.hopper-console-source'),
+    resourcesPanel = consolePanels.find(".hopper-console-resources"),
     consolePanel = consolePanels.find(".hopper-console-console");
 
 //hash table
 var navHashMap = {
     element : elementNav,
     network : networkNav,
-    resource : resourceNav,
-    profile : profileNav,
+    source : sourceNav,
+    resources : resourcesNav,
     console : consoleNav
 }
 
 var panelHashMap = {
     element : elementPanel,
     network : networkPanel,
-    resource : resourcePanel,
-    profile : profilePanel,
+    source : sourcePanel,
+    resources : resourcesPanel,
     console : consolePanel
 }
 
@@ -71,30 +71,49 @@ function panelSwitch( obj ){
     panelHashMap[obj].addClass(activeClass);
 }
 
-//查询连接，并且跳转至resource
+//查询连接，并且跳转至source
 logPanel.on("click", function (e){
-    var panelName = "resource";
+    var panelName = "source";
     //当点击的是file标签
     if(e.target.nodeName === "FILE"){
-        //先跳转到resource页面
+        //先跳转到source页面
         tableSwitch(panelName);
         var t = $(e.target).text().split("^");
         var fileName = t[0];
         var line = t[1];
-        request(fileName, function (err, data){
-            var _body = data.body;
-            panelHashMap[panelName].find("#showResource").text(data.body);
+
+        util.parseDOM(fileName, {
+            line : true,
+            lineNumber : line
+        }, function (data){
+            panelHashMap[panelName].find("#showResource").html(data).end().scrollTop(300);
         })
     }
 });
 
 //渲染
 var h = {
+    dom : function ( obj ){
+        //渲染dom
+        util.parseDOM(obj.url, {}, function ( data ){
+            panelHashMap.element.find("#elementResource").html(data);
+        });
+    },
     log : function ( obj ){
         //解析栈
         var stackObj = util.execStack(obj.stack);
         //将解析结果赋给obj
             _.extend(obj,stackObj);
+
+        var _log = obj.log;
+
+        //客户端对string做了encodeURIComponent
+        //这里做一个解析
+        switch ($.type(_log)){
+            case "string" :
+                obj.log = window.decodeURIComponent(_log);
+                break;
+        }
 
         //push进console列表中
         $console_statement.push(obj);
