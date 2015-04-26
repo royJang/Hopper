@@ -15,15 +15,27 @@ util.getLocalIP = function (){
 //解析错误栈
 util.execStack = function ( stack ){
 
-    var _stack = /at\s*([http|https|file].+\.(?:js|html))\s*:\s*(\d+)\s*:\s*(\d+)/.exec(stack),
+    var _stack = /at\s*([http|https|file|localhost].+\/(.+\.(?:js|html)))\s*:\s*(\d+)\s*:\s*(\d+)/.exec(stack),
+        allInfo = "",
+        fullName = "",
+        fileName = "",
+        fileLine = "",
+        pos = "";
+
+    console.log(stack);
+
+    if(_stack){
         allInfo = _stack[0],
-        fileName = _stack[1],
-        fileLine = _stack[2],
-        pos = _stack[3];
+        fullName = _stack[1],
+        fileName = _stack[2],
+        fileLine = _stack[3],
+        pos = _stack[4];
+    }
 
     return {
         allInfo : allInfo,
         file : fileName,
+        fullName : fullName,
         line : fileLine,
         pos : pos
     }

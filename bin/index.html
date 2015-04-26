@@ -48,11 +48,24 @@
                 <ul id="elementResource"></ul>
             </div>
             <div class="hopper-console-network">
-                network
+                deving...
             </div>
             <div class="hopper-console-source">
-                <ul id="showSource">
-                </ul>
+                <div class="console-source-file-list">
+                    <div>
+                        <ul class="file-items">
+                            <script type="application/x-template" id="source-item-template">
+                                <% for(var i=0,len=statement.length;i<len;i++){ %>
+                                    <li data-value="<%= statement[i]['fullName'] %>"><%= statement[i]['file'] %></li>
+                                <% } %>
+                            </script>
+                        </ul>
+                    </div>
+                </div>
+                <div class="showSourceWrapper">
+                    <ul id="showSource">
+                    </ul>
+                </div>
             </div>
             <div class="hopper-console-resources active">
                 <div class="resource-type">
@@ -67,15 +80,13 @@
                         <li>Key</li>
                         <li>Value</li>
                     </ul>
-                    <div class="resource-content-content">
-
-                    </div>
+                    <div class="resource-content-content"></div>
                 </div>
             </div>
             <div class="hopper-console-console">
                 <ul id="console-panel">
                     <script type="application/x-template" id="console-panel-template">
-                        <% for(var i in statement){ console.log(statement); %>
+                        <% for(var i in statement){ %>
                             <% if(statement[i].type == "Error"){  %>
                             <li style="color:red;">
                             <% } else { %>
@@ -94,7 +105,8 @@
                                 <div class="fr">
                                     <span class="file">
                                         <% if(statement[i].file && statement[i].line){ %>
-                                            <file><%= statement[i].file %>^<%= statement[i].line %></file>
+                                            <file data-value="<%= statement[i].fullName%>" data-line="<%= statement[i].line %>" >
+                                                <%= statement[i].file %>^<%= statement[i].line %></file>
                                         <% } %>
                                     </span>
                                 </div>

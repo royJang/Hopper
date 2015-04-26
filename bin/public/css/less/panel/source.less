@@ -1,15 +1,35 @@
 .hopper-console-source{
-  #showSource {
-    width:100vw; height:@pannelHeight; border:none; padding:10px; .box-sizing(border-box);
-    font-size:14px; .font-family();
-    li{
-      line-height: 30px; margin:3px;
-      i {
-        margin-right:10px; display: inline-block; width:30px; .ta; .height(30px); background: #dedede;
-        border-radius: 50%; font-size: 12px;
+  min-width: 800px; width:100vw; .of;
+  .console-source-file-list,.showSourceWrapper {
+    .fl; height:@pannelHeight;
+  }
+
+  .console-source-file-list {
+    width:20vw; border-right: 1px solid #ccc; background:@bg;
+    .file-items{
+      li {
+        padding:3px 4px; margin:5px;border-radius: 3px; cursor: pointer;
+        &.active {
+          background: @blue5; color:#fff;
+        }
       }
-      active {
-        background: @yellow; border-radius: 3px;
+    }
+  }
+
+  .showSourceWrapper {
+    width:80vw;
+    #showSource {
+      height:@pannelHeight; border:none; padding:10px; .box-sizing(border-box);
+      font-size:14px; .font-family(); overflow-y:auto;
+      li{
+        line-height: 30px; margin:3px;
+        i {
+          margin-right:10px; display: inline-block; width:30px; .ta; .height(30px); background: #dedede;
+          border-radius: 50%; font-size: 12px;
+        }
+        active {
+          background: @yellow; border-radius: 3px;
+        }
       }
     }
   }

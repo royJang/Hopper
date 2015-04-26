@@ -293,7 +293,9 @@ body {
   font-size: 14px;
 }
 .hopper-nav {
-  width: 100%;
+  width: 100vw;
+  height: 6vh;
+  overflow: hidden;
 }
 .hopper-nav ul {
   border-bottom: 1px solid #999;
@@ -304,16 +306,21 @@ body {
 }
 .hopper-nav ul li {
   float: left;
-  line-height: 30px;
-  height: 30px;
+  height: 5vh;
+  line-height: 5vh;
   padding: 0px 10px;
+  margin: 2px;
   text-align: center;
-  margin: 5px;
+  box-sizing: border-box;
 }
 .hopper-nav ul li:hover {
   background: #fff;
   color: #000;
   border-radius: 3px;
+}
+.connect-list {
+  height: 4vh;
+  overflow: hidden;
 }
 .connect-list .mobile-active {
   border-bottom: 1px solid #ccc;
@@ -322,9 +329,10 @@ body {
 .connect-list .mobile-active > span,
 .connect-list .mobile-active > ul {
   float: left;
-  height: 45px;
-  line-height: 45px;
+  height: 4vh;
+  line-height: 4vh;
   padding-left: 5px;
+  box-sizing: border-box;
 }
 .connect-list .mobile-active ul {
   overflow: hidden;
@@ -340,6 +348,9 @@ body {
 .connect-list .mobile-active ul li i {
   margin-right: 5px;
   vertical-align: middle;
+}
+.hopper-console {
+  border-top: 1px solid #ccc;
 }
 .hopper-console-nav {
   background: #e3e3e3;
@@ -389,8 +400,35 @@ body {
   background: #006699;
   color: #fff;
 }
-.hopper-console-child-layout .hopper-console-source #showSource {
+.hopper-console-child-layout .hopper-console-source {
+  min-width: 800px;
   width: 100vw;
+  overflow: hidden;
+}
+.hopper-console-child-layout .hopper-console-source .console-source-file-list,
+.hopper-console-child-layout .hopper-console-source .showSourceWrapper {
+  float: left;
+  height: 85vh;
+}
+.hopper-console-child-layout .hopper-console-source .console-source-file-list {
+  width: 20vw;
+  border-right: 1px solid #ccc;
+  background: #f3f3f3;
+}
+.hopper-console-child-layout .hopper-console-source .console-source-file-list .file-items li {
+  padding: 3px 4px;
+  margin: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.hopper-console-child-layout .hopper-console-source .console-source-file-list .file-items li.active {
+  background: #006699;
+  color: #fff;
+}
+.hopper-console-child-layout .hopper-console-source .showSourceWrapper {
+  width: 80vw;
+}
+.hopper-console-child-layout .hopper-console-source .showSourceWrapper #showSource {
   height: 85vh;
   border: none;
   padding: 10px;
@@ -399,12 +437,13 @@ body {
   box-sizing: border-box;
   font-size: 14px;
   font-family: "Microsoft YaHei" "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3";
+  overflow-y: auto;
 }
-.hopper-console-child-layout .hopper-console-source #showSource li {
+.hopper-console-child-layout .hopper-console-source .showSourceWrapper #showSource li {
   line-height: 30px;
   margin: 3px;
 }
-.hopper-console-child-layout .hopper-console-source #showSource li i {
+.hopper-console-child-layout .hopper-console-source .showSourceWrapper #showSource li i {
   margin-right: 10px;
   display: inline-block;
   width: 30px;
@@ -415,7 +454,7 @@ body {
   border-radius: 50%;
   font-size: 12px;
 }
-.hopper-console-child-layout .hopper-console-source #showSource li active {
+.hopper-console-child-layout .hopper-console-source .showSourceWrapper #showSource li active {
   background: #ffff00;
   border-radius: 3px;
 }

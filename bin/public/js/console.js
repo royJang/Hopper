@@ -41,10 +41,14 @@ var panelHashMap = {
 }
 
 //log部分
-var logPanel = consolePanel.find("#console-panel"),
+var logPanel = panelHashMap.console.find("#console-panel"),
+    sourcePanelItems = panelHashMap.source.find(".file-items"),
     $console = $("#console-panel-template"),
+    $source = $("#source-item-template"),
     $console_template = _.template($console.text()),
-    $console_statement = [];
+    $console_statement = [],
+    $source_template = _.template($source.text()),
+    $source_statement = [];
 
 var activeClass = "active";
 
@@ -79,17 +83,28 @@ logPanel.on("click", function (e){
     if(e.target.nodeName === "FILE"){
         //先跳转到source页面
         tableSwitch(panelName);
-        var t = $(e.target).text().split("^");
-        var fileName = t[0];
-        var line = t[1];
 
-        util.parseDOM(fileName, {
+        var et = $(e.target),
+            t = et.attr("data-value"),
+            u = et.attr("data-line");
+
+        util.parseDOM(t, {
             line : true,
-            lineNumber : line
+            lineNumber : u
         }, function (data){
             panelHashMap[panelName].find("#showSource").html(data).end().scrollTop(300);
         })
     }
+});
+
+//source面板中的文件切换
+sourcePanelItems.delegate("li", "click", function (e){
+    var tag = $(this).attr("data-value");
+    sourcePanelItems.find("li").removeClass("active");
+    $(this).addClass("active");
+    util.parseDOM(tag,{},function (data){
+        panelHashMap.source.find("#showSource").html(data);
+    })
 });
 
 //渲染
@@ -105,6 +120,9 @@ var h = {
         //log数组清空
         $console_statement.length = 0;
         $console_statement = [];
+        //source数组清空
+        $source_statement.length = 0;
+        $source_statement = [];
         //source页面清空
         panelHashMap["source"].find("#showSource").html("");
         //resource 跳回 localStorage
@@ -153,11 +171,31 @@ var h = {
 
         //push进console列表中
         $console_statement.push(obj);
-        //渲染template
+        //push进source的文件列表
+
+        var IN = false;
+        //判断在数组中有没有这个文件
+        $source_statement.forEach(function (el, i){
+            if( el.fullName == obj.fullName ){
+                IN = true;
+            }
+        });
+
+        if(!IN){
+            $source_statement.push(obj);
+        }
+
+        //渲染console template
         var r = $console_template({
             statement : $console_statement
         });
+        //渲染source template
+        var sourceR = $source_template({
+            statement : $source_statement
+        });
+
         logPanel.html(r);
+        sourcePanelItems.html(sourceR);
     },
     clientError : function (obj){
         obj.type = "Error";
