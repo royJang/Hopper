@@ -53,7 +53,7 @@ body{
 }
 
 .hopper-console-nav {
-  background: #e3e3e3;
+  background: #e3e3e3; border-bottom:1px solid #ccc;
   ul {
     .of;
     li {
@@ -69,7 +69,10 @@ body{
 }
 
 .hopper-console-child-layout{
-  height:80vh; overflow-y:auto;
+
+  @pannelHeight:85vh;
+
+  height:@pannelHeight; overflow-y:auto;
   >div {
     display: none;
     &.active {
@@ -78,6 +81,7 @@ body{
   }
   @import "panel/element";
   @import "panel/source";
+  @import "panel/resource";
   @import "panel/log";
 }
 

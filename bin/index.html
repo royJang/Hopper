@@ -36,26 +36,41 @@
     <div class="hopper-console">
         <div class="hopper-console-nav">
             <ul class="hopper-console-nav-list">
-                <li class="hopper-nav-element active">Element</li>
+                <li class="hopper-nav-element">Element</li>
                 <li class="hopper-nav-network">Network</li>
                 <li class="hopper-nav-source">Source</li>
-                <li class="hopper-nav-resources">Resources</li>
+                <li class="hopper-nav-resources active">Resources</li>
                 <li class="hopper-nav-console">Console</li>
             </ul>
         </div>
         <div class="hopper-console-child-layout">
-            <div class="hopper-console-element active">
+            <div class="hopper-console-element">
                 <ul id="elementResource"></ul>
             </div>
             <div class="hopper-console-network">
                 network
             </div>
             <div class="hopper-console-source">
-                <ul id="showResource">
+                <ul id="showSource">
                 </ul>
             </div>
-            <div class="hopper-console-resources">
-                profile
+            <div class="hopper-console-resources active">
+                <div class="resource-type">
+                    <ul>
+                        <li class="active" data-value="localStorage"><i class="icon-database"></i>Local Storage</li>
+                        <li data-value="sessionStorage"><i class="icon-database"></i>Session Storage</li>
+                        <li data-value="cookies"><i class="icon-menu"></i>Cookies</li>
+                    </ul>
+                </div>
+                <div class="resource-content">
+                    <ul class="resource-content-keyValue">
+                        <li>Key</li>
+                        <li>Value</li>
+                    </ul>
+                    <div class="resource-content-content">
+
+                    </div>
+                </div>
             </div>
             <div class="hopper-console-console">
                 <ul id="console-panel">

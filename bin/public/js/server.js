@@ -1,6 +1,3 @@
-var c = chrome,
-    cr = chrome.runtime;
-
 var http = require("http"),
     fs = require("fs"),
     os = require('os');
@@ -25,7 +22,7 @@ var win = gui.Window.get();
 //win.showDevTools();
 
 //将title替换为hopper - ip
-$("title").html("Hopper" + "    -    " + util.getLocalIP());
+$("title").html("Hopper" + "    -    " + util.getLocalIP() + " : " + listen );
 
 //链接部分
 var list_item = $(".connect-list-item");
@@ -34,6 +31,11 @@ var template = _.template(connectingList.text());
 var connected = {};
 
 io.on("connection", function (socket){
+
+    socket.on("disconnect", function (){
+        log.disconnect();
+    });
+
     //新成员加入
     socket.on('join', function(data){
         connected[data.hostname] = data.ua;
@@ -43,13 +45,16 @@ io.on("connection", function (socket){
         list_item.html(r);
     });
 
-    //渲染dom结构
-    socket.on("dom", log.dom);
+    //获取页面信息
+    //url, localStorage, SessionStorage, cookies
+    socket.on("pageInfo", log.pageInfo);
 
     //当有log请求
     socket.on("log", log.log);
+    socket.on("clientError", log.clientError);
     socket.on("debug", log.debug);
 });
+
 
 server.listen(listen);
 

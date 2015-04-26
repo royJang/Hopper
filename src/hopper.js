@@ -10,8 +10,12 @@
         class2type[ "[object " + el + "]" ] = el.toLowerCase();
     });
 
+    var console = window.console;
+
     //获得当前的地址
-    var path = location.href;
+    var path = window.location.href,
+        localStorage = window.localStorage,
+        sessionStorage = window.sessionStorage;
 
     var rwindow = /^\[object (?:Window|DOMWindow|global)\]$/;
 
@@ -23,6 +27,16 @@
     var aps = ap.slice;
     var apf = ap.forEach;
     var apu = ap.push;
+
+    //捕获全局异常
+    window.onerror = function (log, file, line, pos) {
+        socket.emit("clientError", {
+            log: log,
+            file: file,
+            line: line,
+            pos: pos
+        });
+    };
 
     var whatTheFuck = function ( callback ){
         try{
@@ -46,20 +60,27 @@
         return rwindow.test(serialize.call(obj))
     }
 
-    function copyObject(org) {
-        var copy = Object.create(Object.getPrototypeOf(org));
-        copyOwnPropertiesFrom(copy, org);
-        return copy;
+    //获取客户端localStorage & session Storage
+    function getStorage ( storage ){
+        var o = {},
+            len = storage.length;
+        for(var i= 0; i<len; i++){
+            var _k = storage.key(i);
+            o[_k] = storage.getItem(_k);
+        }
+        return o;
     }
 
-    function copyOwnPropertiesFrom(target, source) {
-        Object.getOwnPropertyNames(source)
-            .forEach(function(propertyKey) {
-                var desc = Object.getOwnPropertyDescriptor(source, propertyKey);
-                Object.defineProperty(target, propertyKey, desc);
-            });
+    //获取客户端cookie
+    function getCookies (){
+        var o = {};
 
-        return target;
+        document.cookie.split(";").forEach(function (el){
+            var c = el.split("=");
+            o[c[0]] = c[1];
+        });
+
+        return o;
     }
 
     var util = {
@@ -93,97 +114,78 @@
         }
     };
 
-    var h  = {
-        send : function (args, stack){
-            var _log = "",
-                _type = "";
+    function send (args, stack){
+        var _log = "",
+            _type = "";
 
-            apf.call(args, function (el, i, array){
-                var obj = el
-                var log = obj;
-                var type = getType(log);
+        apf.call(args, function (el, i, array){
+            var obj = el
+            var log = obj;
+            var type = getType(log);
 
-                //根据type 处理log
-                switch ( type ){
-                    case "object" : {
-                        //是一个元素
-                        if(!util.isPlainObject(obj)){
-                            log = obj.toString();
-                        }else{
-                            log = JSON.stringify(obj);
-                        }
-                        break;
+            //根据type 处理log
+            switch ( type ){
+                case "object" : {
+                    //是一个元素
+                    if(!util.isPlainObject(obj)){
+                        log = obj.toString();
+                    }else{
+                        log = JSON.stringify(obj);
                     }
-                    case "string" : {
-                        log = encodeURIComponent(obj);
-                        break;
-                    }
-                    case "function" : {
-                        log = log.toString();
-                        break;
-                    }
-                    case "regexp" : {
-                        log = obj.log.toString();
-                        break;
-                    }
-                    case "array" : {
-                        log = "[ " + log + " ]";
-                        break;
-                    }
-                    case "undefined" : {
-                        break;
-                    }
+                    break;
                 }
+                case "string" : {
+                    log = encodeURIComponent(obj);
+                    break;
+                }
+                case "function" : {
+                    log = log.toString();
+                    break;
+                }
+                case "regexp" : {
+                    log = obj.log.toString();
+                    break;
+                }
+                case "array" : {
+                    log = "[ " + log + " ]";
+                    break;
+                }
+                case "undefined" : {
+                    break;
+                }
+            }
 
-                //索引大于0 在log 前面加一个, 变为 <String, String>这种形式～
-                _log += (i > 0 ? (", " + log) : log);
-                _type += (i > 0 ? (", " + type) : type);
-            })
-            socket.emit("log", {
-                log : _log,
-                type : _type,
-                stack : stack
-            });
-        },
-        log : function (){
-            var self = this,
-                args = arguments;
+            //索引大于0 在log 前面加一个, 变为 <String, String>这种形式～
+            _log += (i > 0 ? (", " + log) : log);
+            _type += (i > 0 ? (", " + type) : type);
+        })
+        socket.emit("log", {
+            log : _log,
+            type : _type,
+            stack : stack
+        });
+    }
 
-            //获取文件信息
-            whatTheFuck(function (e){
-                self.send( args, e.stack );
-            })
-        },
-        info : function (){
-            this.log( arguments );
-        },
-        warn : function (){
-            this.log( arguments );
-        },
-        error : function ( msg, file, line ){
-            this.send({
-                "log": msg,
-                "type": "Error",
-                "line" : line,
-                "file" : file
-            });
-        },
-        debug : function (){
-            var self = this;
-            whatTheFuck(function (e){
-                //捕获错误栈,传给server,这样server就知道当前是哪个页面了
-                socket.emit("debug", e.stack);
-            });
-        }
-    };
+    function log (){
+        var args = arguments;
+        //获取文件信息
+        whatTheFuck(function (e){
+            send( args, e.stack );
+        })
+    }
+
+    function debug (){
+        whatTheFuck(function (e){
+            //捕获错误栈,传给server,这样server就知道当前是哪个页面了
+            socket.emit("debug", e.stack);
+        });
+    }
 
     //覆盖console
-    window.console = h;
-
-    //捕获全局异常
-    window.onerror = function (msg, file, line) {
-        console.error(msg, file, line);
-    };
+    console.log = log;
+    console.info = log;
+    console.warn = log;
+    console.error = log;
 
     //join ~
     socket.emit("join", {
@@ -192,8 +194,11 @@
     });
 
     //传输DOM结构
-    socket.emit("dom", {
-       url : path
+    socket.emit("pageInfo", {
+       url : path,
+       localStorage : getStorage(localStorage),
+       sessionStorage : getStorage(sessionStorage),
+       cookies : getCookies()
     });
 
 })(window);

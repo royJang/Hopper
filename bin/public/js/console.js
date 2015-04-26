@@ -55,20 +55,21 @@ consoleNavs.find("li").on("click", function (el){
 });
 
 function tableSwitch (name){
-    navSwitch(name);
-    panelSwitch(name);
+    navSwitch(name) && panelSwitch(name);
 }
 
 //导航切换
 function navSwitch ( obj ){
     consoleNavs.find("li").removeClass(activeClass);
     navHashMap[obj].addClass(activeClass);
+    return true;
 }
 
 //面板切换
 function panelSwitch( obj ){
     consolePanels.find(">div").removeClass(activeClass);
     panelHashMap[obj].addClass(activeClass);
+    return true;
 }
 
 //查询连接，并且跳转至source
@@ -86,17 +87,52 @@ logPanel.on("click", function (e){
             line : true,
             lineNumber : line
         }, function (data){
-            panelHashMap[panelName].find("#showResource").html(data).end().scrollTop(300);
+            panelHashMap[panelName].find("#showSource").html(data).end().scrollTop(300);
         })
     }
 });
 
 //渲染
 var h = {
-    dom : function ( obj ){
+    //当disconnect
+    disconnect : function (){
+        //element页面清空
+        panelHashMap.element.find("#elementResource").html("");
+        //resource页面清空
+        panelHashMap.resources.find(".resource-content-content").html("");
+        //log页面清空
+        logPanel.html("");
+        //log数组清空
+        $console_statement.length = 0;
+        $console_statement = [];
+        //source页面清空
+        panelHashMap["source"].find("#showSource").html("");
+        //resource 跳回 localStorage
+        panelHashMap.resources.find(".resource-type>ul>li:eq(0)").click();
+    },
+    pageInfo : function ( obj ){
         //渲染dom
         util.parseDOM(obj.url, {}, function ( data ){
             panelHashMap.element.find("#elementResource").html(data);
+        });
+        //默认渲染localStorage
+        util.parseStorage(obj.localStorage, function (data){
+            panelHashMap.resources.find(".resource-content-content").html(data);
+        });
+
+        //resource页面,localStorage,SessionStorage,Cookie间切换
+        var resourceTypeItem = panelHashMap.resources.find(".resource-type>ul>li");
+
+        resourceTypeItem.on("click", function (){
+            var typeTitle = $(this).text();
+            var typeName = $(this).attr("data-value");
+            resourceTypeItem.removeClass("active");
+            $(this).addClass("active");
+            util.parseStorage(obj[typeName], function (data){
+                panelHashMap.resources.find(".resource-content-content").html(
+                    data.length < 1 ? ("<p class='typeTitle'>"+typeTitle+"</p") : data
+                );
+            })
         });
     },
     log : function ( obj ){
@@ -115,6 +151,16 @@ var h = {
                 break;
         }
 
+        //push进console列表中
+        $console_statement.push(obj);
+        //渲染template
+        var r = $console_template({
+            statement : $console_statement
+        });
+        logPanel.html(r);
+    },
+    clientError : function (obj){
+        obj.type = "Error";
         //push进console列表中
         $console_statement.push(obj);
         //渲染template
