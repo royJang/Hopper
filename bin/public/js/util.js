@@ -1,4 +1,3 @@
-var os = require("os");
 var _ = require("underscore");
 
 var request = require("request");
@@ -10,12 +9,6 @@ var isAddULElement = false;
 var isAddLIElement = false;
 var elementCollectForLi = [];
 var elementCollectForUL = [];
-
-//获取本地ip
-util.getLocalIP = function (){
-    var _network = os.networkInterfaces();
-    return _network["en0"][1].address;
-}
 
 //解析错误栈
 util.execStack = function ( stack, callback ){

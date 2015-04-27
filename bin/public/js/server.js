@@ -11,6 +11,7 @@ var $ = require("jquery"),
 
 var util = require("./public/js/util");
 var log = require("./public/js/console");
+var ip = require("./public/js/ip");
 
 //默认端口
 var listen = 5390;
@@ -22,7 +23,7 @@ var win = gui.Window.get();
 //win.showDevTools();
 
 //将title替换为hopper - ip
-$("title").html("Hopper" + "    -    " + util.getLocalIP() + " : " + listen );
+$("title").html("Hopper" + "    -    " + ip.address() + " : " + listen );
 
 //链接部分
 var list_item = $(".connect-list-item");

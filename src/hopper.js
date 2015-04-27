@@ -2,7 +2,7 @@
 (function (window){
 
     //hopper main
-    var socket = io.connect("http://172.16.0.143:5390");
+    var socket = io.connect("http://172.16.162.121:5390");
 
     var class2type = {},
         toString = class2type.toString;
