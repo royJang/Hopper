@@ -40,9 +40,10 @@
 
     var whatTheFuck = function ( callback ){
         try{
-            wtf
+            new Error("bom");
         }
         catch(e){
+            console.log(e);
             return callback(e);
         }
     };

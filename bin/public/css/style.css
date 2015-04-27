@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?ecur04');
-	src:url('fonts/icomoon.eot?#iefixecur04') format('embedded-opentype'),
-		url('fonts/icomoon.woff?ecur04') format('woff'),
-		url('fonts/icomoon.ttf?ecur04') format('truetype'),
-		url('fonts/icomoon.svg?ecur04#icomoon') format('svg');
+	src:url('fonts/icomoon.eot?-44q6li');
+	src:url('fonts/icomoon.eot?#iefix-44q6li') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-44q6li') format('woff'),
+		url('fonts/icomoon.ttf?-44q6li') format('truetype'),
+		url('fonts/icomoon.svg?-44q6li#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -64,7 +64,31 @@
 	content: "\e9e5";
 }
 
+.icon-plus:before {
+	content: "\ea0a";
+}
+
+.icon-minus:before {
+	content: "\ea0b";
+}
+
+.icon-play3:before {
+	content: "\ea1c";
+}
+
+.icon-pause2:before {
+	content: "\ea1d";
+}
+
+.icon-stop2:before {
+	content: "\ea1e";
+}
+
 .icon-github:before {
 	content: "\eab1";
+}
+
+.icon-reddit:before {
+	content: "\eac7";
 }
 

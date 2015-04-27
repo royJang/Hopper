@@ -86,13 +86,23 @@ logPanel.on("click", function (e){
 
         var et = $(e.target),
             t = et.attr("data-value"),
-            u = et.attr("data-line");
+            u = et.attr("data-line"),
+            f = et.attr("data-file");
+
+        //对应的file对应显示active
+        sourcePanelItems.find("li").each(function (i, el){
+            var $li = $(el);
+            if( $li.text() == f ){
+                sourcePanelItems.find("li").removeClass("active");
+                $li.addClass("active");
+            }
+        });
 
         util.parseDOM(t, {
             line : true,
             lineNumber : u
         }, function (data){
-            panelHashMap[panelName].find("#showSource").html(data).end().scrollTop(300);
+            panelHashMap[panelName].find("#showSource").html(data);
         })
     }
 });
@@ -102,7 +112,10 @@ sourcePanelItems.delegate("li", "click", function (e){
     var tag = $(this).attr("data-value");
     sourcePanelItems.find("li").removeClass("active");
     $(this).addClass("active");
-    util.parseDOM(tag,{},function (data){
+    util.parseDOM(tag,{ //这里只展示line,不显示匹配的行号
+        line : true,
+        lineNumber : 9999999
+    },function (data){
         panelHashMap.source.find("#showSource").html(data);
     })
 });

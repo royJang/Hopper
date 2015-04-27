@@ -1,7 +1,8 @@
+//main
 (function (window){
 
     //hopper main
-    var socket = io.connect("http://10.10.12.103:5390");
+    var socket = io.connect("http://172.16.0.143:5390");
 
     var class2type = {},
         toString = class2type.toString;
@@ -41,8 +42,7 @@
     var whatTheFuck = function ( callback ){
         try{
             wtf
-        }
-        catch(e){
+        }catch(e){
             return callback(e);
         }
     };
@@ -183,7 +183,7 @@
 
     //覆盖console
     console.log = log;
-    console.info = log;
+    //console.info = log;
     console.warn = log;
     console.error = log;
 

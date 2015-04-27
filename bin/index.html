@@ -21,9 +21,11 @@
                 <script type="application/x-template" id="connecting">
                     <% for(var i in connecting){ %>
                         <li>
-                            <% if(/android|iphone|ipad/.test(connecting[i]["ua"])){ %>
+                            <% var $ua = connecting[i]; if( ["android","iphone"].indexOf($ua) > -1 ){ %>
                                 <i class="icon-mobile"></i>
-                            <% }else{ %>
+                            <% }else if( ["silk", "ipad"].indexOf($ua) > -1 ){ %>
+                                <i class="icon-tablet"></i>
+                            <% }else { %>
                                 <i class="icon-display"></i>
                             <% } %>
                             <%= connecting[i] + "-" + i %>
@@ -36,19 +38,30 @@
     <div class="hopper-console">
         <div class="hopper-console-nav">
             <ul class="hopper-console-nav-list">
-                <li class="hopper-nav-element">Element</li>
+                <li class="hopper-nav-element active">Element</li>
                 <li class="hopper-nav-network">Network</li>
                 <li class="hopper-nav-source">Source</li>
-                <li class="hopper-nav-resources active">Resources</li>
+                <li class="hopper-nav-resources">Resources</li>
                 <li class="hopper-nav-console">Console</li>
             </ul>
         </div>
         <div class="hopper-console-child-layout">
-            <div class="hopper-console-element">
-                <ul id="elementResource"></ul>
+            <div class="hopper-console-element active">
+                <div id="container">
+                    <ul id="elementResource"></ul>
+                </div>
             </div>
-            <div class="hopper-console-network">
-                deving...
+            <div class="hopper-console-network" id="hopper-console-network">
+                <div>
+                    <ul>
+                        <li>Root node
+                            <ul>
+                                <li>Child node 1</li>
+                                <li>Child node 2</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="hopper-console-source">
                 <div class="console-source-file-list">
@@ -67,7 +80,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="hopper-console-resources active">
+            <div class="hopper-console-resources" id="hopper-console-resources">
                 <div class="resource-type">
                     <ul>
                         <li class="active" data-value="localStorage"><i class="icon-database"></i>Local Storage</li>
@@ -80,7 +93,9 @@
                         <li>Key</li>
                         <li>Value</li>
                     </ul>
-                    <div class="resource-content-content"></div>
+                    <div class="resource-content-content">
+
+                    </div>
                 </div>
             </div>
             <div class="hopper-console-console">
@@ -105,7 +120,9 @@
                                 <div class="fr">
                                     <span class="file">
                                         <% if(statement[i].file && statement[i].line){ %>
-                                            <file data-value="<%= statement[i].fullName%>" data-line="<%= statement[i].line %>" >
+                                            <file data-value="<%= statement[i].fullName%>"
+                                                  data-file="<%= statement[i].file %>"
+                                                  data-line="<%= statement[i].line %>" >
                                                 <%= statement[i].file %>^<%= statement[i].line %></file>
                                         <% } %>
                                     </span>

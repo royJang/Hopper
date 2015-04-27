@@ -6,6 +6,11 @@ var beautify = require("js-beautify").html;
 
 var util = {};
 
+var isAddULElement = false;
+var isAddLIElement = false;
+var elementCollectForLi = [];
+var elementCollectForUL = [];
+
 //获取本地ip
 util.getLocalIP = function (){
     var _network = os.networkInterfaces();
@@ -13,27 +18,25 @@ util.getLocalIP = function (){
 }
 
 //解析错误栈
-util.execStack = function ( stack ){
+util.execStack = function ( stack, callback ){
 
-    var _stack = /at\s*([http|https|file|localhost].+\/(.+\.(?:js|html)))\s*:\s*(\d+)\s*:\s*(\d+)/.exec(stack),
-        allInfo = "",
-        fullName = "",
+    var stackArr = stack.split("\n"),
+        stackStatement = stackArr[stackArr.length-1];
+
+    var _stack = /at\s*(.+\/(\w+\.\w+)?):(\d+):(\d+)/.exec(stackStatement);
+    var fullName = "",
         fileName = "",
-        fileLine = "",
-        pos = "";
-
-    console.log(stack);
+        fileLine = 0,
+        pos = 0;
 
     if(_stack){
-        allInfo = _stack[0],
-        fullName = _stack[1],
-        fileName = _stack[2],
-        fileLine = _stack[3],
+        fullName = _stack[1];
+        fileName = _stack[2] || fullName;
+        fileLine = _stack[3];
         pos = _stack[4];
     }
 
     return {
-        allInfo : allInfo,
         file : fileName,
         fullName : fullName,
         line : fileLine,
@@ -61,6 +64,8 @@ util.parseDOM = function ( url, options, callback ){
             })
         }
 
+        isAddULElement = false;
+
         $body.split("\n").forEach(function (el,i){
             //element面板必须是每行都要有内容的
             //source面板则可以有空格行
@@ -80,8 +85,21 @@ util.parseDOM = function ( url, options, callback ){
     });
 }
 
+//是否是一个完整的闭合标签
+util.isCloseTag = function (str){
+    var m = str.match(/<(\w+).+<\/(\w+)>/im);
+    if(m){
+        return m[1] == m[2];
+    }else{
+        return false;
+    }
+}
+
 //<returns> string
 util.stringToDOMTree = function ( str, options ){
+
+    var ict = this.isCloseTag(str);
+    console.log(ict);
 
     //将 < 替换为 &lt;
     //将 > 替换为 &gt;
@@ -97,12 +115,49 @@ util.stringToDOMTree = function ( str, options ){
             if( options.line ){
                 return "&nbsp;&nbsp;&nbsp;";
             }else{
-                return "@";
+                return "{HOPPER}";
             }
         }
     });
 
-    var $html = "<li>";
+    var hopper_len = str.split("{HOPPER}").length;
+
+    hopper_len = (hopper_len && hopper_len > 1) ? hopper_len-1 : 0;
+
+    //确定层级后，将{HOPPER}删除
+    str = str.replace(/\{HOPPER\}/g,"&nbsp;&nbsp;&nbsp;&nbsp;");
+
+    var $html = "";
+
+    if( !options.line ){ //element模块
+        if( hopper_len % 2 === 0 ){
+
+            var $iof = elementCollectForLi.indexOf(hopper_len) > -1;
+
+            if($iof && isAddLIElement ){
+                $html += "</li>";
+                elementCollectForLi.splice($iof,1);
+            }
+
+            if(!ict){
+                elementCollectForLi.push(hopper_len);
+            }
+
+            isAddLIElement = true;
+            $html += "<li class='hopper-rows hopper-tree'>";
+        }else{
+            if((elementCollectForUL[elementCollectForUL.length-1] == hopper_len) && isAddULElement){
+                $html += "</ul>";
+                elementCollectForUL.pop();
+            }
+            isAddULElement = true;
+            elementCollectForUL.push(hopper_len);
+            $html += "<ul class='hopper-table hopper-tree'>";
+        }
+    //source模块
+    }else{
+        $html = "<li>";
+    }
 
     if( options.line ){
         $html += "<i>";
@@ -123,7 +178,9 @@ util.stringToDOMTree = function ( str, options ){
         }
     }
 
-    $html += "</li>";
+    if( options.line ){ //source模块
+        $html += "</li>";
+    }
 
     return $html;
 }

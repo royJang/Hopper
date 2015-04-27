@@ -33,12 +33,19 @@ var connected = {};
 io.on("connection", function (socket){
 
     socket.on("disconnect", function (){
+        //清空连接列表
+        connected = {};
+        list_item.html("");
+
+        //console 执行disconnect
         log.disconnect();
     });
 
     //新成员加入
     socket.on('join', function(data){
-        connected[data.hostname] = data.ua;
+        if(data){
+            connected[data.hostname] = data.ua;
+        }
         var r = template({
             connecting : connected
         });
