@@ -5,10 +5,13 @@ var beautify = require("js-beautify").html;
 
 var util = {};
 
-var isAddULElement = false;
 var isAddLIElement = false;
 var elementCollectForLi = [];
-var elementCollectForUL = [];
+
+var char = "@_@";
+var replaceChar = "&nbsp;";
+var reg = new RegExp(char + "|<|>", "g");
+var reg2 = new RegExp(char, "g");
 
 //解析错误栈
 util.execStack = function ( stack, callback ){
@@ -50,10 +53,11 @@ util.parseDOM = function ( url, options, callback ){
         var $body = data.body;
         var codeStr = "";
 
-        //非source面板，做美化
+        //element模块做一下美化
         if( !defaultOptions.line ){
             $body = beautify($body,{
-                indent_size : 4
+                indent_size : 4,
+                indent_char : char
             })
         }
 
@@ -80,104 +84,81 @@ util.parseDOM = function ( url, options, callback ){
 
 //是否是一个完整的闭合标签
 util.isCloseTag = function (str){
-    var m = str.match(/<(\w+).+<\/(\w+)>/im);
-    if(m){
-        return m[1] == m[2];
-    }else{
-        return false;
-    }
+    return !!str.match(/<(\w+).+<\/(\w+)>|<.+\/>/igm);
 }
 
 //<returns> string
 util.stringToDOMTree = function ( str, options ){
+    //doctype头直接return出去
+    if( str.toLowerCase().indexOf("!doctype") > -1 ){
+        return "<li class='hopper-rows hopper-tree'><font color='#ccc'>" + str + "</font></li>";
+    }
 
     var ict = this.isCloseTag(str);
-    console.log(ict);
 
     //将 < 替换为 &lt;
     //将 > 替换为 &gt;
-    //将 4个空格 替换为 4个&nbsp;
-    str = str.replace(/\s{4}|<|>/g, function ( f ){
+    str = str.replace(reg, function ( f ){
         if( f == "<" ){
             return "&lt;"
         }else if( f == ">" ){
             return "&gt;"
         }else{
-            //source面板替换为&nbsp;
-            //element面板替换为@，然后做再一次处理
+            //将 #H# 替换为 空格;
             if( options.line ){
-                return "&nbsp;&nbsp;&nbsp;";
-            }else{
-                return "{HOPPER}";
+                return replaceChar;
+            }
+            //element面板不做处理，原样返回
+            else{
+                return char;
             }
         }
     });
 
-    var hopper_len = str.split("{HOPPER}").length;
+    var hopper_len = str.split(char).length;
+    hopper_len = (hopper_len && hopper_len > 1) ? (hopper_len-1) : 0;
 
-    hopper_len = (hopper_len && hopper_len > 1) ? hopper_len-1 : 0;
-
-    //确定层级后，将{HOPPER}删除
-    str = str.replace(/\{HOPPER\}/g,"&nbsp;&nbsp;&nbsp;&nbsp;");
+    //确定length后，将#H#删除
+    str = str.replace(reg2, replaceChar);
 
     var $html = "";
 
-    if( !options.line ){ //element模块
-        if( hopper_len % 2 === 0 ){
+    //这个标签是否需要闭合
+    var $iof = elementCollectForLi.indexOf(hopper_len),
+        isCanBeCloseTag = !ict && ($iof > -1);
 
-            var $iof = elementCollectForLi.indexOf(hopper_len) > -1;
-
-            if($iof && isAddLIElement ){
-                $html += "</li>";
-                elementCollectForLi.splice($iof,1);
-            }
-
-            if(!ict){
-                elementCollectForLi.push(hopper_len);
-            }
-
-            isAddLIElement = true;
-            $html += "<li class='hopper-rows hopper-tree'>";
-        }else{
-            if((elementCollectForUL[elementCollectForUL.length-1] == hopper_len) && isAddULElement){
-                $html += "</ul>";
-                elementCollectForUL.pop();
-            }
-            isAddULElement = true;
-            elementCollectForUL.push(hopper_len);
-            $html += "<ul class='hopper-table hopper-tree'>";
-        }
-    //source模块
-    }else{
-        $html = "<li>";
-    }
-
+    //需要加行号
     if( options.line ){
+        $html += "<li>";
         $html += "<i>";
         $html += options.lm;
         $html += "</i>";
-    }
-
-    if( str.search(/doctype/i) > -1 ){
-        $html += "<font color='#ccc'>" + str + "</font>";
-    }else{
         //如果支持显示行号
         //且行号 等于 当前渲染的 行数
         //则 把当前行 加一个active,css会把它渲染成黄色的
         if( options.line && options.lineNumber && options.lineNumber > 0 && options.lineNumber == options.lm ){
             $html += "<active>"+ str +"</active>";
-        }else{
-            $html += str;
         }
-    }
-
-    if( options.line ){ //source模块
         $html += "</li>";
+    }else{
+        if( ict ){
+            $html += "<li class='hopper-rows hopper-tree'>";
+            $html += str;
+            $html += "</li>";
+        }
+        else {
+            $html += "<ul class='hopper-table hopper-tree'>";
+            $html += str;
+            elementCollectForLi.push(hopper_len);
+        }
+        if( isCanBeCloseTag ){
+            elementCollectForLi.splice($iof,1);
+            $html += "</ul>";
+        }
     }
 
     return $html;
 }
-
 
 //解析localStorage/sessionStorage/cookie
 util.parseStorage = function ( ls, callback ){

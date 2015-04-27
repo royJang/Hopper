@@ -1,0 +1,24 @@
+.hopper-console-element {
+  #elementResource{
+    width:100vw; height:@pannelHeight; border:none; padding:10px; .box-sizing(border-box);
+    font-size:14px; .font-family();
+
+    >.hopper-rows {
+      //display: block !important;
+    }
+
+    .hopper-table,.hopper-rows {
+      //display: none;
+    }
+
+    li {
+      padding:3px; border-radius: 3px; cursor: default;
+      &:focus {
+
+      }
+      &:hover {
+        background: @blue5; color:#fff;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>hopper --example</title>
+</head>
+<body>
+
+<script src="debuggap.js"></script>
+<script>
+
+    var n = "<div>123</div>".replace(/<|>/g,function (f){
+       if(f === "<"){
+           return "&lt;"
+       }else{
+          return "&gt;";
+       }
+    })
+
+    document.write("<div style='color:#ccc';>" + n + "</div>");
+
+</script>
+</body>
+</html>
