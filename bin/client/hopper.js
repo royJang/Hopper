@@ -1,8 +1,10 @@
 //main
 (function (window){
 
-    //hopper main
-    var socket = io.connect("http://10.10.12.103:5390");
+    var hopperServerIp = document.getElementById("hopper").getAttribute("src").replace(/\/hopper\.js/, "");
+
+    //链接server
+    var socket = io.connect(hopperServerIp);
 
     var class2type = {},
         toString = class2type.toString;
@@ -74,12 +76,10 @@
     //获取客户端cookie
     function getCookies (){
         var o = {};
-
         document.cookie.split(";").forEach(function (el){
             var c = el.split("=");
             o[c[0]] = c[1];
         });
-
         return o;
     }
 

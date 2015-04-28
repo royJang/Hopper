@@ -8,7 +8,7 @@ var util = {};
 var isAddLIElement = false;
 var elementCollectForLi = [];
 
-var char = "@_@";
+var char = "\x68\x23\x23";
 var replaceChar = "&nbsp;";
 var reg = new RegExp(char + "|<|>", "g");
 var reg2 = new RegExp(char, "g");
@@ -40,6 +40,7 @@ util.execStack = function ( stack, callback ){
     }
 };
 
+//bug太多了，没法fixed
 util.parseDOM = function ( url, options, callback ){
     var self = this,
         defaultOptions = {
@@ -70,7 +71,7 @@ util.parseDOM = function ( url, options, callback ){
                 //lineNumber 的值为 i+1
                 defaultOptions.lm = (i+1);
 
-                //解析html，确定从属关系 (暂时没有实现)
+                //解析html，确定从属关系
                 var _html = self.stringToDOMTree( el, defaultOptions );
 
                 //解析完成后拼装
@@ -87,14 +88,27 @@ util.isCloseTag = function (str){
     return !!str.match(/<(\w+).+<\/(\w+)>|<.+\/>/igm);
 }
 
+util.isCompleteTag = function ( $tag ){
+    var _b = false;
+    elementCollectForLi.forEach(function (el,i){
+        if( "/" + el.tag === $tag ){
+            _b = true;
+        }
+    });
+    return _b;
+}
+
 //<returns> string
 util.stringToDOMTree = function ( str, options ){
+
     //doctype头直接return出去
     if( str.toLowerCase().indexOf("!doctype") > -1 ){
         return "<li class='hopper-rows hopper-tree'><font color='#ccc'>" + str + "</font></li>";
     }
 
-    var ict = this.isCloseTag(str);
+    var ict = this.isCloseTag(str),
+        _tag = str.replace(reg2, "").match(/<(\/?\w+)/);
+    var $tag = _tag ? _tag[1] : null;
 
     //将 < 替换为 &lt;
     //将 > 替换为 &gt;
@@ -104,7 +118,7 @@ util.stringToDOMTree = function ( str, options ){
         }else if( f == ">" ){
             return "&gt;"
         }else{
-            //将 #H# 替换为 空格;
+            //将 char 替换为 空格;
             if( options.line ){
                 return replaceChar;
             }
@@ -118,14 +132,31 @@ util.stringToDOMTree = function ( str, options ){
     var hopper_len = str.split(char).length;
     hopper_len = (hopper_len && hopper_len > 1) ? (hopper_len-1) : 0;
 
-    //确定length后，将#H#删除
+    //确定length后，将char删除
     str = str.replace(reg2, replaceChar);
 
     var $html = "";
 
-    //这个标签是否需要闭合
-    var $iof = elementCollectForLi.indexOf(hopper_len),
-        isCanBeCloseTag = !ict && ($iof > -1);
+    var hasHopper = function (){
+        var _b = false,
+            n = -1;
+        label:for(var i= 0, len=elementCollectForLi.length; i<len; i++ ){
+            var el = elementCollectForLi[i];
+            if( el.n == hopper_len ){
+                _b = true;
+                n = i;
+                break label;
+            }
+        }
+        return {
+            n : n,
+            b : _b
+        };
+    }
+
+    var $iof = hasHopper(),
+        isCanBeCloseTag = (!ict && $iof.b) && this.isCompleteTag($tag),
+        mayBeCloseTag = !ict && this.isCompleteTag($tag);
 
     //需要加行号
     if( options.line ){
@@ -138,22 +169,34 @@ util.stringToDOMTree = function ( str, options ){
         //则 把当前行 加一个active,css会把它渲染成黄色的
         if( options.line && options.lineNumber && options.lineNumber > 0 && options.lineNumber == options.lm ){
             $html += "<active>"+ str +"</active>";
+        }else{
+            $html += str;
         }
         $html += "</li>";
     }else{
+        //闭合标签直接over
         if( ict ){
-            $html += "<li class='hopper-rows hopper-tree'>";
-            $html += str;
-            $html += "</li>";
+            $html += "<li class='hopper-rows hopper-tree'>" + str + "</li>";
         }
-        else {
+        //可以闭合标签的时候，闭合ul
+        if( isCanBeCloseTag ){
+            elementCollectForLi.splice($iof.n, 1);
+            $html += str;
+            $html += "</ul>";
+        }
+        //也许可以闭合标签的时候 xxxx </xx> 这种情况下
+        else if( mayBeCloseTag ){
+            $html += str;
+            $html += "</ul>";
+        }
+        //非闭合标签++
+        else if( !ict ) {
             $html += "<ul class='hopper-table hopper-tree'>";
             $html += str;
-            elementCollectForLi.push(hopper_len);
-        }
-        if( isCanBeCloseTag ){
-            elementCollectForLi.splice($iof,1);
-            $html += "</ul>";
+            elementCollectForLi.push({
+                n : hopper_len,
+                tag : $tag
+            });
         }
     }
 
@@ -172,7 +215,7 @@ util.parseStorage = function ( ls, callback ){
         localStructure += "<li>" + ls[i] + "</li>";
         localStructure += "</ul>";
     }
-    return callback(localStructure);
+    return callback( localStructure );
 };
 
 module.exports = util;

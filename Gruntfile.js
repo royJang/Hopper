@@ -6,12 +6,23 @@ module.exports = function(grunt) {
             index : {
                 files: ['bin/public/css/less/**.*','bin/public/css/less/panel/**.**'],
                 tasks: ['less'],
+            },
+            hopper : {
+                files : ['bin/client/socket.io.js', 'bin/client/hopper.js'],
+                tasks : ['uglify']
             }
         },
         less : {
             index: {
                 files: {
                     "bin/public/css/main.css": "bin/public/css/less/main.less"
+                }
+            }
+        },
+        uglify : {
+            hopper : {
+                files: {
+                    'bin/client/dist/hopper.js': ['bin/client/socket.io.js', 'bin/client/hopper.js']
                 }
             }
         }
