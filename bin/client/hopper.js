@@ -1,6 +1,7 @@
 //main
 (function (window){
 
+    //获取script标签的src
     var hopperServerIp = document.getElementById("hopper").getAttribute("src").replace(/\/hopper\.js/, "");
 
     //链接server
