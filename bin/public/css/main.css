@@ -388,17 +388,27 @@ body {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 12px;
+  color: #333;
   font-family: "Microsoft YaHei" "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3";
+}
+.hopper-console-child-layout .hopper-console-element #elementResource li,
+.hopper-console-child-layout .hopper-console-element #elementResource ul {
+  display: none;
+}
+.hopper-console-child-layout .hopper-console-element #elementResource > li,
+.hopper-console-child-layout .hopper-console-element #elementResource > ul {
+  display: block;
+}
+.hopper-console-child-layout .hopper-console-element #elementResource > li i,
+.hopper-console-child-layout .hopper-console-element #elementResource > ul i {
+  color: #009966;
+  cursor: pointer;
 }
 .hopper-console-child-layout .hopper-console-element #elementResource li {
   padding: 3px;
   border-radius: 3px;
   cursor: default;
-}
-.hopper-console-child-layout .hopper-console-element #elementResource li:hover {
-  background: #006699;
-  color: #fff;
 }
 .hopper-console-child-layout .hopper-console-source {
   min-width: 800px;

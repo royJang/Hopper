@@ -76,6 +76,26 @@ function panelSwitch( obj ){
     return true;
 }
 
+//element面板,展开/关闭树
+$("#elementResource").delegate(".icon-plus", "click", function (){
+    $(this).parent().find(">ul,>li").show();
+    $(this).removeClass("icon-plus").addClass("icon-minus");
+})
+
+
+//source面板中的文件切换
+sourcePanelItems.delegate("li", "click", function (e){
+    var tag = $(this).attr("data-value");
+    sourcePanelItems.find("li").removeClass("active");
+    $(this).addClass("active");
+    util.parseDOM(tag,{ //这里只展示line,不显示匹配的行号
+        line : true,
+        lineNumber : -1
+    },function (data){
+        panelHashMap.source.find("#showSource").html(data);
+    })
+});
+
 //查询连接，并且跳转至source
 logPanel.on("click", function (e){
     var panelName = "source";
@@ -107,18 +127,7 @@ logPanel.on("click", function (e){
     }
 });
 
-//source面板中的文件切换
-sourcePanelItems.delegate("li", "click", function (e){
-    var tag = $(this).attr("data-value");
-    sourcePanelItems.find("li").removeClass("active");
-    $(this).addClass("active");
-    util.parseDOM(tag,{ //这里只展示line,不显示匹配的行号
-        line : true,
-        lineNumber : 9999999
-    },function (data){
-        panelHashMap.source.find("#showSource").html(data);
-    })
-});
+
 
 //渲染
 var h = {

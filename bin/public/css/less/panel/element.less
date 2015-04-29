@@ -1,23 +1,23 @@
 .hopper-console-element {
   #elementResource{
     width:100vw; height:@pannelHeight; border:none; padding:10px; .box-sizing(border-box);
-    font-size:14px; .font-family();
+    font-size:12px; color:#333;  .font-family();
 
-    >.hopper-rows {
-      //display: block !important;
+    li, ul {
+      display: none;
     }
 
-    .hopper-table,.hopper-rows {
-      //display: none;
+    >li, >ul {
+      display: block;
+      i {
+        color:@green5; cursor: pointer;
+      }
     }
 
     li {
       padding:3px; border-radius: 3px; cursor: default;
       &:focus {
 
-      }
-      &:hover {
-        background: @blue5; color:#fff;
       }
     }
   }

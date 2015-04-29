@@ -2,6 +2,7 @@ var _ = require("underscore");
 
 var request = require("request");
 var beautify = require("js-beautify").html;
+var htmlparser = require("htmlparser2");
 
 var util = {};
 
@@ -19,7 +20,9 @@ util.execStack = function ( stack, callback ){
     var stackArr = stack.split("\n"),
         stackStatement = stackArr[stackArr.length-1];
 
-    var _stack = /at\s*(.+\/(\w+\.\w+)?):(\d+):(\d+)/.exec(stackStatement);
+    //解析错误栈
+    var _stack = /at\s*.+?((?:http|https|blob|file).+\/(\w+\.\w+)?):(\d+):(\d+)\)?/.exec(stackStatement);
+
     var fullName = "",
         fileName = "",
         fileLine = 0,
@@ -62,8 +65,6 @@ util.parseDOM = function ( url, options, callback ){
             })
         }
 
-        isAddULElement = false;
-
         $body.split("\n").forEach(function (el,i){
             //element面板必须是每行都要有内容的
             //source面板则可以有空格行
@@ -71,8 +72,14 @@ util.parseDOM = function ( url, options, callback ){
                 //lineNumber 的值为 i+1
                 defaultOptions.lm = (i+1);
 
-                //解析html，确定从属关系
-                var _html = self.stringToDOMTree( el, defaultOptions );
+                var _html;
+
+                //非html标签不做domparse
+                if(/^[^<>`~!/@\#}$%:;)(_^{&*=|'+]+$/.test(el)){
+                    _html = el;
+                } else {
+                    _html = self.stringToDOMTree( el, defaultOptions );
+                }
 
                 //解析完成后拼装
                 codeStr += _html + "\n";
@@ -83,9 +90,26 @@ util.parseDOM = function ( url, options, callback ){
     });
 }
 
+util.inContent = function (){
+
+};
+
 //是否是一个完整的闭合标签
 util.isCloseTag = function (str){
-    return !!str.match(/<(\w+).+<\/(\w+)>|<.+\/>/igm);
+    var _b = false;
+    //有些人自闭合标签写的不规范，导致解析出错,
+    //这里直接将自闭合枚举出来
+    ["!doctype", "meta", "link", "img", "br", "hr", "area", "input", "<!--"].forEach(function (el){
+        if( str.indexOf(el) > -1 ){
+            _b = true;
+        }
+    })
+    //匹配 <div></div> 这种格式的
+    //匹配成功也算是闭合标签
+    if( !!(str.match(/<(\w+).+<\/(\w+)>|<.+\/>/igm)) ){
+        _b = true;
+    }
+    return _b;
 }
 
 util.isCompleteTag = function ( $tag ){
@@ -101,10 +125,7 @@ util.isCompleteTag = function ( $tag ){
 //<returns> string
 util.stringToDOMTree = function ( str, options ){
 
-    //doctype头直接return出去
-    if( str.toLowerCase().indexOf("!doctype") > -1 ){
-        return "<li class='hopper-rows hopper-tree'><font color='#ccc'>" + str + "</font></li>";
-    }
+    str = str.toLowerCase();
 
     var ict = this.isCloseTag(str),
         _tag = str.replace(reg2, "").match(/<(\/?\w+)/);
@@ -140,7 +161,7 @@ util.stringToDOMTree = function ( str, options ){
     var hasHopper = function (){
         var _b = false,
             n = -1;
-        label:for(var i= 0, len=elementCollectForLi.length; i<len; i++ ){
+        label:for(var i = 0, len = elementCollectForLi.length; i<len; i++ ){
             var el = elementCollectForLi[i];
             if( el.n == hopper_len ){
                 _b = true;
@@ -177,26 +198,27 @@ util.stringToDOMTree = function ( str, options ){
         //闭合标签直接over
         if( ict ){
             $html += "<li class='hopper-rows hopper-tree'>" + str + "</li>";
-        }
-        //可以闭合标签的时候，闭合ul
-        if( isCanBeCloseTag ){
-            elementCollectForLi.splice($iof.n, 1);
-            $html += str;
-            $html += "</ul>";
-        }
-        //也许可以闭合标签的时候 xxxx </xx> 这种情况下
-        else if( mayBeCloseTag ){
-            $html += str;
-            $html += "</ul>";
-        }
-        //非闭合标签++
-        else if( !ict ) {
-            $html += "<ul class='hopper-table hopper-tree'>";
-            $html += str;
-            elementCollectForLi.push({
-                n : hopper_len,
-                tag : $tag
-            });
+        }else {
+            //非闭合标签++
+            if( !ict ) {
+                $html += "<ul class='hopper-table hopper-tree'><i class='icon-plus hopper-plus'></i>";
+                $html += str;
+                elementCollectForLi.push({
+                    n : hopper_len,
+                    tag : $tag
+                });
+            }
+            //可以闭合标签的时候，闭合ul
+            if( isCanBeCloseTag ){
+                elementCollectForLi.splice($iof.n, 1);
+                $html += str;
+                $html += "</ul>";
+            }
+            //也许可以闭合标签的时候 xxxx </xx> 这种情况下
+            else if( mayBeCloseTag ){
+                $html += str;
+                $html += "</ul>";
+            }
         }
     }
 

@@ -29,9 +29,6 @@ if( !_port ){
     port = localStorage.getItem('port');
 }
 
-console.log(port);
-
-
 //最后给出的js是这样一个地址
 /*
     http://ip:port/hopper.js

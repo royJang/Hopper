@@ -1,54 +1,342 @@
 <!DOCTYPE html>
-<html>
-  <head id="dasd" ng-controoler>
-    <title ng-controller="app"><%= title %></title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-  <input type="text" />
-  <h1><%= title %></h1>
-  <p id="dsd">Welcome to <%= title %></p>
-  <ul class="dsad sk">dadf
-    <li>smile</li>
-    <li>smile</li>
-    <li>jj</li>
-    <li>smile
-      <ul class="dsdsd">
-        <li>j</li>
-        <li>j</li>
-        <li>j</li>
-        <li>j</li>
-        <li>j
-          <span>33</span>
-          <span>33</span>
-          <span>33</span>
-          <span>33</span>
-        </li>
-      </ul>
-    </li>
-  </ul>
-    <dsndsd>
-      ddqdqwdqd
-    </dsndsd>
-    <p>
-      <span>-1</span>
-      <span>0</span>
-      <span>1</span>
-      <span>2</span>
-      <span>3</span>
-    </p>
-  <ul>
-    <li>ds jds</li>
-  </ul>
-  <ol>
-    <li>
-      <input />
-      <button>dsadada</button>
-    </li>
-  </ol>
+<html lang="en-US"><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Socket.IO  —  Server API</title>
+
   <script src="http://172.16.0.143:5390/hopper.js" id="hopper"></script>
-  <script>
-    console.log('express!');
+
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet" type="text/css">
+  <link rel="profile" href="http://gmpg.org/xfn/11">
+  <link rel="pingback" href="http://socket.io/xmlrpc.php">
+
+
+  <link rel="alternate" type="application/rss+xml" title=" » Feed" href="http://socket.io/feed/">
+  <link rel="alternate" type="application/rss+xml" title=" » Comments Feed" href="http://socket.io/comments/feed/">
+  <link rel="alternate" type="application/rss+xml" title=" » Server API Comments Feed" href="http://socket.io/docs/server-api/feed/">
+  <link rel="stylesheet" id="videojs-plugin-css" href="http://socket.io/wp-content/plugins/videojs-html5-video-player-for-wordpress/plugin-styles.css?ver=4.1.1" type="text/css" media="all">
+  <link rel="stylesheet" id="videojs-css" href="//vjs.zencdn.net/4.5/video-js.css?ver=4.1.1" type="text/css" media="all">
+  <link rel="stylesheet" id="wpclef-main-css" href="http://socket.io/wp-content/plugins/wpclef/assets/dist/css/main.min.css?ver=2.2.9.1" type="text/css" media="all">
+  <link rel="stylesheet" id="mailchimp-for-wp-checkbox-css" href="http://socket.io/wp-content/plugins/mailchimp-for-wp/assets/css/checkbox.css?ver=2.0.1" type="text/css" media="all">
+  <link rel="stylesheet" id="socket-io-website-style-css" href="http://socket.io/wp-content/themes/socket.io-website/style.css?ver=4.1.1" type="text/css" media="all">
+  <script id="twitter-wjs" src="//platform.twitter.com/widgets.js"></script><script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript" src="http://socket.io/wp-includes/js/jquery/jquery.js?ver=1.11.1"></script>
+  <script type="text/javascript" src="http://socket.io/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1"></script>
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://socket.io/xmlrpc.php?rsd">
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://socket.io/wp-includes/wlwmanifest.xml">
+  <meta name="generator" content="WordPress 4.1.1">
+  <link rel="canonical" href="http://socket.io/docs/server-api/">
+  <link rel="shortlink" href="http://socket.io/?p=74">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18488944-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
   </script>
-  </body>
-</html>
+
+  <script type="text/javascript"> document.createElement("video");document.createElement("audio");document.createElement("track"); </script>
+  <!-- Easy Columns 2.1.1 by Pat Friedl http://www.patrickfriedl.com -->
+  <link rel="stylesheet" href="http://socket.io/wp-content/plugins/easy-columns/css/easy-columns.css" type="text/css" media="screen, projection">
+</head>
+
+<body class="page page-id-74 page-child parent-pageid-26 page-template page-template-page-siderbar page-template-page-siderbar-php custom-background group-blog" data-twttr-rendered="true">
+<div id="bar" style="background-position: 0% 54.9712092130518%;"></div>
+<div id="page" class="hfeed site">
+
+  <header id="masthead" class="site-header" role="banner">
+    <div class="site-branding">
+      <h1 class="site-title"><a href="http://socket.io/" rel="home"></a></h1>
+      <h2 class="site-description"></h2>
+    </div>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+      <div id="logo-container"><a href="/" id="logo">socket.io</a></div>
+      <div class="menu-menu-container"><ul id="menu-menu" class="menu"><li id="menu-item-6" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-6"><a href="http://socket.io/">Home</a></li>
+          <li id="menu-item-153" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-153"><a href="http://socket.io/demos/chat/">Demos</a></li>
+          <li id="menu-item-30" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30"><a href="http://socket.io/get-started/">Get started</a></li>
+          <li id="menu-item-29" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-29"><a href="http://socket.io/docs/">Docs</a></li>
+          <li id="menu-item-95" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-95"><a href="http://socket.io/blog/">Blog</a></li>
+          <li class="menu-item"><a href="/slack" title="32 users of online of 2463">Slack<span id="slack-count" class="">32</span></a></li><li id="menu-item-43" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-43"><a href="http://socket.io/download/">Download v1.3.5</a></li>
+        </ul></div>      <iframe src="http://ghbtns.com/github-btn.html?user=Automattic&amp;repo=socket.io&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="120" id="gh-watchers" height="20"></iframe>
+    </nav><!-- #site-navigation -->
+  </header><!-- #masthead -->
+
+  <div id="content" class="site-content">
+
+
+    <div id="sidebar" class="content-area">
+      <ul id="posts">
+        <li><a href="http://socket.io/docs/">Overview</a></li>
+        <li class="anchor"></li>
+
+        <li id="parent"><a href="http://socket.io/docs/server-api/">Server API</a></li>
+
+
+
+        <li id="post"><a href="http://socket.io/docs/client-api/">Client API</a></li>
+
+        <li class="anchor"></li>
+
+
+        <li id="post"><a href="http://socket.io/docs/rooms-and-namespaces/">Rooms and Namespaces</a></li>
+
+
+
+        <li id="post"><a href="http://socket.io/docs/migrating-from-0-9/">Migrating from 0.9</a></li>
+
+
+
+        <li id="post"><a href="http://socket.io/docs/using-multiple-nodes/">Using multiple nodes</a></li>
+
+
+
+        <li id="post"><a href="http://socket.io/docs/logging-and-debugging/">Logging and Debugging</a></li>
+
+
+
+        <li id="post"><a href="http://socket.io/docs/faq/">FAQ</a></li>
+
+
+      </ul>
+    </div>
+    <div id="primary" class="content-area with-sidebar">
+      <main id="main" class="site-main" role="main">
+
+
+        <article id="post-74" class="post-74 page type-page status-publish hentry">
+          <div class="entry-content">
+            <h1 id="server-api"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server-api" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server API</h1>
+            <h2 id="server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server</h2>
+            <p>Exposed by <code>require('socket.io')</code>.</p>
+            <h2 id="server()"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server()" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server()</h2>
+            <p>Creates a new <code>Server</code>. Works with and without <code>new</code>:</p>
+<pre><code>var io = require('socket.io')();
+    // or
+    var Server = require('socket.io');
+    var io = new Server();</code></pre>
+            <h2 id="server(opts:object)"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server(opts:object)" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server(opts:Object)</h2>
+            <p>Optionally, the first or second argument (see below) of the <code>Server</code><br>
+              constructor can be an options object.</p>
+            <p>The following options are supported:</p>
+            <ul>
+              <li><code>serveClient</code> sets the value for Server#serveClient()</li>
+              <li><code>path</code> sets the value for Server#path()</li>
+            </ul>
+            <p>The same options passed to socket.io are always passed to<br>
+              the <code>engine.io</code> <code>Server</code> that gets created. See engine.io<br>
+              <a href="https://github.com/learnboost/engine.io#methods-1">options</a><br>
+              as reference.</p>
+            <h2 id="server(srv:http#server,-opts:object)"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server(srv:http#server,-opts:object)" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server(srv:http#Server, opts:Object)</h2>
+            <p>Creates a new <code>Server</code> and attaches it to the given <code>srv</code>. Optionally<br>
+              <code>opts</code> can be passed.</p>
+            <h2 id="server(port:number,-opts:object)"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server(port:number,-opts:object)" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server(port:Number, opts:Object)</h2>
+            <p>Binds socket.io to a new <code>http.Server</code> that listens on <code>port</code>.</p>
+            <h2 id="server#serveclient(v:boolean):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#serveclient(v:boolean):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#serveClient(v:Boolean):Server</h2>
+            <p>If <code>v</code> is <code>true</code> the attached server (see <code>Server#attach</code>) will serve<br>
+              the client files. Defaults to <code>true</code>.</p>
+            <p>This method has no effect after <code>attach</code> is called.</p>
+<pre><code>// pass a server and the `serveClient` option
+    var io = require('socket.io')(http, { serveClient: false });
+
+    // or pass no server and then you can call the method
+    var io = require('socket.io')();
+    io.serveClient(false);
+    io.attach(http);</code></pre>
+            <p>If no arguments are supplied this method returns the current value.</p>
+            <h2 id="server#path(v:string):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#path(v:string):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#path(v:String):Server</h2>
+            <p>Sets the path <code>v</code> under which <code>engine.io</code> and the static files will be<br>
+              served. Defaults to <code>/socket.io</code>.</p>
+            <p>If no arguments are supplied this method returns the current value.</p>
+            <h2 id="server#adapter(v:adapter):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#adapter(v:adapter):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#adapter(v:Adapter):Server</h2>
+            <p>Sets the adapter <code>v</code>. Defaults to an instance of the <code>Adapter</code> that<br>
+              ships with socket.io which is memory based. See<br>
+              <a href="https://github.com/learnboost/socket.io-adapter">socket.io-adapter</a>.</p>
+            <p>If no arguments are supplied this method returns the current value.</p>
+            <h2 id="server#origins(v:string):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#origins(v:string):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#origins(v:String):Server</h2>
+            <p>Sets the allowed origins <code>v</code>. Defaults to any origins being allowed.</p>
+            <p>If no arguments are supplied this method returns the current value.</p>
+            <h2 id="server#sockets:namespace"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#sockets:namespace" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#sockets:Namespace</h2>
+            <p>The default (<code>/</code>) namespace.</p>
+            <h2 id="server#attach(srv:http#server,-opts:object):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#attach(srv:http#server,-opts:object):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#attach(srv:http#Server, opts:Object):Server</h2>
+            <p>Attaches the <code>Server</code> to an engine.io instance on <code>srv</code> with the<br>
+              supplied <code>opts</code> (optionally).</p>
+            <h2 id="server#attach(port:number,-opts:object):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#attach(port:number,-opts:object):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#attach(port:Number, opts:Object):Server</h2>
+            <p>Attaches the <code>Server</code> to an engine.io instance that is bound to <code>port</code><br>
+              with the given <code>opts</code> (optionally).</p>
+            <h2 id="server#listen"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#listen" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#listen</h2>
+            <p>Synonym of <code>Server#attach</code>.</p>
+            <h2 id="server#bind(srv:engine#server):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#bind(srv:engine#server):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#bind(srv:engine#Server):Server</h2>
+            <p>Advanced use only. Binds the server to a specific engine.io <code>Server</code><br>
+              (or compatible API) instance.</p>
+            <h2 id="server#onconnection(socket:engine#socket):server"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#onconnection(socket:engine#socket):server" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#onconnection(socket:engine#Socket):Server</h2>
+            <p>Advanced use only. Creates a new <code>socket.io</code> client from the incoming<br>
+              engine.io (or compatible API) <code>socket</code>.</p>
+            <h2 id="server#of(nsp:string):namespace"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#of(nsp:string):namespace" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#of(nsp:String):Namespace</h2>
+            <p>Initializes and retrieves the given <code>Namespace</code> by its pathname<br>
+              identifier <code>nsp</code>.</p>
+            <p>If the namespace was already initialized it returns it right away.</p>
+            <h2 id="server#emit"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#emit" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#emit</h2>
+            <p>Emits an event to all connected clients. The following two are<br>
+              equivalent:</p>
+<pre><code>var io = require('socket.io')();
+    io.sockets.emit('an event sent to all connected clients');
+    io.emit('an event sent to all connected clients');</code></pre>
+            <p>For other available methods, see <code>Namespace</code> below.</p>
+            <h2 id="server#use"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#server#use" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Server#use</h2>
+            <p>See <code>Namespace#use</code> below.</p>
+            <h2 id="namespace"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#namespace" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Namespace</h2>
+            <p>Represents a pool of sockets connected under a given scope identified<br>
+              by a pathname (eg: <code>/chat</code>).</p>
+            <p>By default the client always connects to <code>/</code>.</p>
+            <h3>Events</h3>
+            <ul>
+              <li><code>connection</code> / <code>connect</code>. Fired upon a connection.
+                <p>Parameters:</p>
+                <ul>
+                  <li><code>Socket</code> the incoming socket.</li>
+                </ul>
+              </li>
+            </ul>
+            <h2 id="namespace#name:string"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#namespace#name:string" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Namespace#name:String</h2>
+            <p>The namespace identifier property.</p>
+            <h2 id="namespace#connected:object"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#namespace#connected:object" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Namespace#connected:Object<socket></socket></h2>
+            <p>Hash of <code>Socket</code> objects that are connected to this namespace indexed<br>
+              by <code>id</code>.</p>
+            <h2 id="namespace#use(fn:function):namespace"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#namespace#use(fn:function):namespace" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Namespace#use(fn:Function):Namespace</h2>
+            <p>Registers a middleware, which is a function that gets executed for<br>
+              every incoming <code>Socket</code> and receives as parameter the socket and a<br>
+              function to optionally defer execution to the next registered<br>
+              middleware.</p>
+<pre><code>var io = require('socket.io')();
+    io.use(function(socket, next){
+    if (socket.request.headers.cookie) return next();
+    next(new Error('Authentication error'));
+    });</code></pre>
+            <p>Errors passed to middleware callbacks are sent as special <code>error</code><br>
+              packets to clients.</p>
+            <h2 id="socket"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket</h2>
+            <p>A <code>Socket</code> is the fundamental class for interacting with browser<br>
+              clients. A <code>Socket</code> belongs to a certain <code>Namespace</code> (by default <code>/</code>)<br>
+              and uses an underlying <code>Client</code> to communicate.</p>
+            <h2 id="socket#rooms:array"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#rooms:array" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#rooms:Array</h2>
+            <p>A list of strings identifying the rooms this socket is in.</p>
+            <h2 id="socket#client:client"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#client:client" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#client:Client</h2>
+            <p>A reference to the underlying <code>Client</code> object.</p>
+            <h2 id="socket#conn:socket"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#conn:socket" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#conn:Socket</h2>
+            <p>A reference to the underyling <code>Client</code> transport connection (engine.io<br>
+              <code>Socket</code> object).</p>
+            <h2 id="socket#request:request"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#request:request" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#request:Request</h2>
+            <p>A getter proxy that returns the reference to the <code>request</code> that<br>
+              originated the underlying engine.io <code>Client</code>. Useful for accessing<br>
+              request headers such as <code>Cookie</code> or <code>User-Agent</code>.</p>
+            <h2 id="socket#id:string"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#id:string" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#id:String</h2>
+            <p>A unique identifier for the socket session, that comes from the<br>
+              underlying <code>Client</code>.</p>
+            <h2 id="socket#emit(name:string[,-…]):socket"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#emit(name:string[,-…]):socket" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#emit(name:String[, …]):Socket</h2>
+            <p>Emits an event to the socket identified by the string <code>name</code>. Any<br>
+              other parameters can be included.</p>
+            <p>All datastructures are supported, including <code>Buffer</code>. JavaScript<br>
+              functions can’t be serialized/deserialized.</p>
+<pre><code>var io = require('socket.io')();
+    io.on('connection', function(socket){
+    socket.emit('an event', { some: 'data' });
+    });</code></pre>
+            <h2 id="socket#join(name:string[,-fn:function]):socket"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#join(name:string[,-fn:function]):socket" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#join(name:String[, fn:Function]):Socket</h2>
+            <p>Adds the socket to the <code>room</code>, and fires optionally a callback <code>fn</code><br>
+              with <code>err</code> signature (if any).</p>
+            <p>The socket is automatically a member of a room identified with its<br>
+              session id (see <code>Socket#id</code>).</p>
+            <p>The mechanics of joining  rooms are handled by the <code>Adapter</code><br>
+              that has been configured (see <code>Server#adapter</code> above), defaulting to<br>
+              <a href="https://github.com/socket.io/socket.io-adapter">socket.io-adapter</a>.</p>
+            <h2 id="socket#leave(name:string[,-fn:function]):socket"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#leave(name:string[,-fn:function]):socket" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#leave(name:String[, fn:Function]):Socket</h2>
+            <p>Removes the socket from <code>room</code>, and fires optionally a callback <code>fn</code><br>
+              with <code>err</code> signature (if any).</p>
+            <p><strong>Rooms are left automatically upon disconnection</strong>.</p>
+            <p>The mechanics of leaving rooms are handled by the <code>Adapter</code><br>
+              that has been configured (see <code>Server#adapter</code> above), defaulting to<br>
+              <a href="https://github.com/socket.io/socket.io-adapter">socket.io-adapter</a>.</p>
+            <h2 id="socket#to(room:string):socket"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#to(room:string):socket" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#to(room:String):Socket</h2>
+            <h2 id="socket#in(room:string):socket"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#socket#in(room:string):socket" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Socket#in(room:String):Socket</h2>
+            <p>Sets a modifier for a subsequent event emission that the event will<br>
+              only be <em>broadcasted</em> to sockets that have joined the given <code>room</code>.</p>
+            <p>To emit to multiple rooms, you can call <code>to</code> several times.</p>
+<pre><code>var io = require('socket.io')();
+    io.on('connection', function(socket){
+    socket.to('others').emit('an event', { some: 'data' });
+    });</code></pre>
+            <h2 id="client"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#client" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Client</h2>
+            <p>The <code>Client</code> class represents an incoming transport (engine.io)<br>
+              connection. A <code>Client</code> can be associated with many multiplexed <code>Socket</code><br>
+              that belong to different <code>Namespace</code>s.</p>
+            <h2 id="client#conn"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#client#conn" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Client#conn</h2>
+            <p>A reference to the underlying <code>engine.io</code> <code>Socket</code> connection.</p>
+            <h2 id="client#request"><a class="icon-link deep-link" href="http://socket.io/docs/server-api/#client#request" style="position: absolute; margin-left: -18px; text-decoration: none; color: #999;">#</a>Client#request</h2>
+            <p>A getter proxy that returns the reference to the <code>request</code> that<br>
+              originated the engine.io connection. Useful for accessing<br>
+              request headers such as <code>Cookie</code> or <code>User-Agent</code>.</p>
+          </div><!-- .entry-content -->
+          <footer class="entry-footer">
+          </footer><!-- .entry-footer -->
+        </article><!-- #post-## -->
+
+
+      </main><!-- #main -->
+    </div><!-- #primary -->
+
+
+  </div><!-- #content -->
+
+  <footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-info">
+      <span class="footer-left">SOCKET.IO IS OPEN-SOURCE (MIT). RUN BY <a href="https://github.com/Automattic/socket.io/graphs/contributors">CONTRIBUTORS</a>. <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" src="http://platform.twitter.com/widgets/follow_button.3a5279b9e317deb7580e36a9ae62a13c.en.html#_=1430031956643&amp;dnt=false&amp;id=twitter-widget-0&amp;lang=en&amp;screen_name=socketio&amp;show_count=true&amp;show_screen_name=true&amp;size=m" class="twitter-follow-button twitter-follow-button" title="Twitter Follow Button" data-twttr-rendered="true" style="width: 233px; height: 20px;"></iframe></span>
+      <span class="footer-right"><a href="http://automattic.com">SUPPORTED BY<div id="a8c-image"></div></a></span>
+    </div><!-- .site-info -->
+  </footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="http://socket.io/wp-content/themes/socket.io-website/js/javascripts.js?ver=1.0.0"></script>
+
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://cdn.socket.io/socket.io-1.3.0.js"></script>
+<!-- Twitter script -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<script>
+  (function() {
+
+    var slack_users_count = 28;
+    var li = $('<li class="menu-item"><a href="/slack">Slack</a></li>')
+    var count = $('<span id="slack-count">').text(slack_users_count);
+    var socket = io('http://slack-io.socket.io');
+
+    JSON.stringify(count);
+
+    li.find('a').append(count);
+    $('#menu-item-43').before(li);
+
+    socket.on('slack users count', function(val, total){
+      var old = Number(count.text());
+      count.text(val);
+      li.find('a').attr('title', val + ' users of online of ' + total);
+
+      if (val > old) {
+        count.removeClass().addClass('animated bounce').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+          $(this).removeClass();
+        });
+      }
+
+      console.log(val);
+
+      $('.slack-users-count').text(val);
+      $('.slack-users-count-total').text(total);
+    });
+  })();
+</script>
+
+
+</body></html>

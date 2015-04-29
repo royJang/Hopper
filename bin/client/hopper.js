@@ -43,25 +43,26 @@
     };
 
     var whatTheFuck = function ( callback ){
-        try{
-            wtf
+
+        try {
+            throw new ReferenceError('wtf');
         }catch(e){
             return callback(e);
         }
     };
 
     var getType = function ( obj ){
-        if (obj == null) {
-            return String(obj)
+            if (obj == null) {
+                return String(obj)
+            }
+            // 早期的webkit内核浏览器实现了已废弃的ecma262v4标准，可以将正则字面量当作函数使用，因此typeof在判定正则时会返回function
+            return typeof obj === "object" || typeof obj === "function" ?
+            class2type[serialize.call(obj)] || "object" :
+                typeof obj
+        },
+        isWindow = function (obj) {
+            return rwindow.test(serialize.call(obj))
         }
-        // 早期的webkit内核浏览器实现了已废弃的ecma262v4标准，可以将正则字面量当作函数使用，因此typeof在判定正则时会返回function
-        return typeof obj === "object" || typeof obj === "function" ?
-        class2type[serialize.call(obj)] || "object" :
-            typeof obj
-    },
-    isWindow = function (obj) {
-        return rwindow.test(serialize.call(obj))
-    }
 
     //获取客户端localStorage & session Storage
     function getStorage ( storage ){
@@ -196,17 +197,10 @@
 
     //传输DOM结构
     socket.emit("pageInfo", {
-       url : path,
-       localStorage : getStorage(localStorage),
-       sessionStorage : getStorage(sessionStorage),
-       cookies : getCookies()
+        url : path,
+        localStorage : getStorage(localStorage),
+        sessionStorage : getStorage(sessionStorage),
+        cookies : getCookies()
     });
 
 })(window);
-
-
-
-
-
-
-
