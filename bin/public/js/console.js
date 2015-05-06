@@ -82,7 +82,6 @@ $("#elementResource").delegate(".icon-plus", "click", function (){
     $(this).removeClass("icon-plus").addClass("icon-minus");
 })
 
-
 //source面板中的文件切换
 sourcePanelItems.delegate("li", "click", function (e){
     var tag = $(this).attr("data-value");
@@ -105,14 +104,13 @@ logPanel.on("click", function (e){
         tableSwitch(panelName);
 
         var et = $(e.target),
-            t = et.attr("data-value"),
-            u = et.attr("data-line"),
-            f = et.attr("data-file");
+            t = et.attr("data-file"),
+            u = et.attr("data-line");
 
         //对应的file对应显示active
         sourcePanelItems.find("li").each(function (i, el){
             var $li = $(el);
-            if( $li.text() == f ){
+            if( $li.text() == t ){
                 sourcePanelItems.find("li").removeClass("active");
                 $li.addClass("active");
             }
@@ -123,11 +121,10 @@ logPanel.on("click", function (e){
             lineNumber : u
         }, function (data){
             panelHashMap[panelName].find("#showSource").html(data);
+            window.location.href = "#l" + u;
         })
     }
 });
-
-
 
 //渲染
 var h = {
@@ -185,10 +182,8 @@ var h = {
 
         //客户端对string做了encodeURIComponent
         //这里做一个解析
-        switch ($.type(_log)){
-            case "string" :
-                obj.log = window.decodeURIComponent(_log);
-                break;
+        if( $.type(_log) == "string" ){
+            obj.log = window.decodeURIComponent(_log);
         }
 
         //push进console列表中

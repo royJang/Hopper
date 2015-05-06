@@ -74,7 +74,7 @@ util.parseDOM = function ( url, options, callback ){
 
                 var _html;
 
-                //非html标签不做domparse
+                //非html标签不做domParse
                 if(/^[^<>`~!/@\#}$%:;)(_^{&*=|'+]+$/.test(el)){
                     _html = el;
                 } else {
@@ -89,10 +89,6 @@ util.parseDOM = function ( url, options, callback ){
         return callback(codeStr);
     });
 }
-
-util.inContent = function (){
-
-};
 
 //是否是一个完整的闭合标签
 util.isCloseTag = function (str){
@@ -125,7 +121,7 @@ util.isCompleteTag = function ( $tag ){
 //<returns> string
 util.stringToDOMTree = function ( str, options ){
 
-    str = str.toLowerCase();
+    //str = str.toLowerCase();
 
     var ict = this.isCloseTag(str),
         _tag = str.replace(reg2, "").match(/<(\/?\w+)/);
@@ -182,7 +178,7 @@ util.stringToDOMTree = function ( str, options ){
     //需要加行号
     if( options.line ){
         $html += "<li>";
-        $html += "<i>";
+        $html += "<i id=\"l"+ options.lm +"\">";
         $html += options.lm;
         $html += "</i>";
         //如果支持显示行号

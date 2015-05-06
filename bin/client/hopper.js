@@ -172,13 +172,13 @@
         var args = arguments;
         //获取文件信息
         whatTheFuck(function (e){
+            //捕获错误栈,传给server,这样server就知道当前是哪个页面了
             send( args, e.stack );
         })
     }
 
     function debug (){
         whatTheFuck(function (e){
-            //捕获错误栈,传给server,这样server就知道当前是哪个页面了
             socket.emit("debug", e.stack);
         });
     }
